@@ -44,6 +44,9 @@ logs/
 *.patch
 *.tmp
 
+# maven ignore
+.mvn/
+
 # system ignore
 .DS_Store
 Thumbs.db
