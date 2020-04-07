@@ -18,4 +18,7 @@ export default {
 a{
   text-decoration:none;
 }
+#app{
+  /* filter: grayscale(100%); */
+}
 </style>

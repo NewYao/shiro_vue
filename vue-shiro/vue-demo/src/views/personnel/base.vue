@@ -1,7 +1,7 @@
 <template>
 <el-container>
     <el-header>
-        <el-button type="button">查询</el-button>
+        <el-button @click="testClick" type="button">查询</el-button>
         1111111111111111
     </el-header>
     <el-main>
@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import { Message } from 'element-ui';
 export default {
     name: 'per_base',
     data() {
@@ -85,6 +86,15 @@ export default {
         }
     },
     methods: {
+        testClick() {
+            this.getRequest("/login", '').then(resp => {
+                if(resp.code == 200){
+                   Message.success({message: resp.msg})
+                }else{
+                    Message.error({message: resp.msg})
+                }
+            })
+        },
         toggleSelection(rows) {
             if (rows) {
                 rows.forEach(row => {
@@ -110,7 +120,8 @@ export default {
 .el-pagination {
     margin-top: 10px;
 }
-.el-main{
+
+.el-main {
     padding: 0 20px 0 0;
 }
 </style>
