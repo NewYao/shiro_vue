@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import cn.jnx.bean.ReturnJson;
+
+import cn.jnx.model.ReturnJson;
 
 @Controller
 public class Hello {
@@ -16,6 +17,6 @@ public class Hello {
         aa.add("56");
         aa.add("57");
         aa.add("58");
-        return new ReturnJson().ok().data(aa);
+        return new ReturnJson().ok().data(aa).message("操作成功！");
     }
 }

@@ -88,11 +88,7 @@ export default {
     methods: {
         testClick() {
             this.getRequest("/login", '').then(resp => {
-                if(resp.code == 200){
-                   Message.success({message: resp.msg})
-                }else{
-                    Message.error({message: resp.msg})
-                }
+                console.log(123456);
             })
         },
         toggleSelection(rows) {
