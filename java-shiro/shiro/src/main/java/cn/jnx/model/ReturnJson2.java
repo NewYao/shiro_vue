@@ -1,4 +1,4 @@
-package cn.jnx.bean;
+package cn.jnx.model;
 
 /**
  * Created with Eclipse

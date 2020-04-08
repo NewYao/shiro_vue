@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">    
+<generatorConfiguration>   
+    <classPathEntry  location="D:\apache-maven-3.3.9\mvnrepository\mysql\mysql-connector-java\5.1.38\mysql-connector-java-5.1.38.jar"/>
+    <context id="DB2Tables"  targetRuntime="MyBatis3">
+        <commentGenerator>
+            <property name="suppressDate" value="true"/>
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://127.0.0.1/shiro?serverTimezone=UTC" userId="root" password="root">
+        </jdbcConnection>
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <!-- 正式目录 -->
+        <!-- 生成模型的包名和位置-->
+        <javaModelGenerator targetPackage="cn.jnx.model" targetProject="d:\generator-output">
+           <!-- 在targetPackage的基础上，根据数据库的schema再生成一层package，最终生成的类放在这个package下，默认为false -->
+            <property name="enableSubPackages" value="false"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- 生成映射文件的包名和位置-->
+        <sqlMapGenerator targetPackage="main.resources.mapping" targetProject="d:\generator-output">
+            <property name="enableSubPackages" value="false"/>
+        </sqlMapGenerator>
+
+        <!-- 生成DAO的包名和位置-->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="cn.jnx.mapper" targetProject="d:\generator-output">
+            <property name="enableSubPackages" value="false"/>
+        </javaClientGenerator>
+        
+        <!-- 映射表 -->
+        <!-- XXX-->
+        <table schema="shiro" tableName="user" domainObjectName="User" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+            <!--table标签下的设置属性useActualColumnNames用于指定生成实体类时是否使用实际的列名作为实体类的属性名，取值true或false。 -->
+            <property name="useActualColumnNames" value="true" />
+ 			<!-- 主键生成方式 -->
+<!-- 			<generatedKey column="ORDER_ID" sqlStatement="select SEQ_T_ORDER.nextval from dual" identity="true" /> -->
+<!--             列名去除前缀 -->
+<!-- 			<columnRenamingRule searchString="^[^_]+" replaceString="" /> -->
+        </table>
+      
+
+    </context>
+</generatorConfiguration>

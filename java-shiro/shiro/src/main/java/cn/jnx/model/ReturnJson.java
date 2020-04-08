@@ -1,4 +1,4 @@
-package cn.jnx.bean;
+package cn.jnx.model;
 
 import org.springframework.stereotype.Component;
 
@@ -12,7 +12,6 @@ import java.util.HashMap;
  * @Date 2018-02-26
  * @Time 16:03
  */
-@Component
 public class ReturnJson extends HashMap<String, Object> {
     /**
      * 
@@ -26,22 +25,14 @@ public class ReturnJson extends HashMap<String, Object> {
      * 
      * @return
      */
-    public ReturnJson ok() {
-        this.put("result", "success");
-        this.put("code", 200);
-        return this;
-    }
+    public ReturnJson ok() {this.put("result", "success");this.put("code", 200);return this;}
 
     /**
      * 失败
      * 
      * @return
      */
-    public ReturnJson fail() {
-        this.put("result", "fail");
-        this.put("code", 400);
-        return this;
-    }
+    public ReturnJson fail() {this.put("result", "fail");this.put("code", 400);return this;}
 
     /**
      * 无权限
@@ -49,11 +40,7 @@ public class ReturnJson extends HashMap<String, Object> {
      * @param code
      * @return
      */
-    public ReturnJson invalid() {
-        this.put("result", "invalid");
-        this.put("code", 403);
-        return this;
-    }
+    public ReturnJson invalid() {this.put("result", "invalid");this.put("code", 403);return this;}
 
     /**
      * 服务器错误
@@ -61,11 +48,7 @@ public class ReturnJson extends HashMap<String, Object> {
      * @param code
      * @return
      */
-    public ReturnJson error() {
-        this.put("result", "error");
-        this.put("code", 500);
-        return this;
-    }
+    public ReturnJson error() {this.put("result", "error");this.put("code", 500);return this;}
 
     /**
      * 描述
