@@ -9,7 +9,7 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 axios.defaults.withCredentials = true
 // Set config defaults when creating the instance
 
-let base = 'http://127.0.0.1';
+let base = 'http://192.168.0.69';
 
 
 // 添加请求拦截器
@@ -36,6 +36,7 @@ axios.interceptors.response.use(success => {
     if (success.data.msg) {
         Message.success({message: success.data.msg})
     }
+    console.log(success.data)
     return success.data;
 }, error => {
     console.log('after--err');

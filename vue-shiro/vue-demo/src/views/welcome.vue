@@ -29,7 +29,7 @@ export default {
             var minute = date.getMinutes(); //分
             var second = date.getSeconds(); //秒
             var time = year + '年' + month + '月' + day + '日 ' + hour + ':' + minute + ':' + second;
-            console.log(time)
+            // console.log(time)
             that.timer = time;
         }, 1000)
     },

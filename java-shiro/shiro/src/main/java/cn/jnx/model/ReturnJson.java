@@ -1,6 +1,5 @@
 package cn.jnx.model;
 
-import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 

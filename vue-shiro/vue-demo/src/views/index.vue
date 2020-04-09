@@ -3,14 +3,14 @@
     <el-header>
         <router-link to="/"><span class="header_left" >小旭旭的夏日</span></router-link>
         <div class="header_right">
-            <el-dropdown>
+            <el-dropdown  @command="handleCommand">
                 <span class="el-dropdown-link">
                     <i class="el-icon-arrow-down el-icon-user"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item>个人中心</el-dropdown-item>
-                    <el-dropdown-item>设置</el-dropdown-item>
-                    <el-dropdown-item divided>注销</el-dropdown-item>
+                    <el-dropdown-item command="1">个人中心</el-dropdown-item>
+                    <el-dropdown-item command="2">设置</el-dropdown-item>
+                    <el-dropdown-item command="3" divided >注销</el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>
         </div>
@@ -97,7 +97,18 @@ export default {
         hide() {
             var flag = this.isCollapse;
             this.isCollapse = !flag;
-        }
+        },
+        handleCommand(command) {
+        this.$message('click on item ' + command);
+            if(command=='1'){
+
+            }else if(command=='2'){
+
+            }else if(command=='3'){
+                this.$router.replace("/");
+            }
+        
+      }
     }
 };
 </script>

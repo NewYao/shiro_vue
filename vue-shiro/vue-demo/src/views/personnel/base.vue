@@ -5,16 +5,22 @@
         1111111111111111
     </el-header>
     <el-main>
-        <el-table size="mini" :data="tableData" border style="width: 100%" @selection-change="handleSelectionChange">
-            <el-table-column type="selection" width="55"></el-table-column>
-            <el-table-column prop="date" label="日期" width="180" :filters="dataArr" :filter-method="dateFilter">
+        <el-table v-loading="loading" element-loading-text="拼命加载中" element-loading-spinner="el-icon-loading" element-loading-background="rgba(0, 0, 0, 0.8)" :stripe="true" :highlight-current-row="true" size="mini" :data="tableData" border style="width: 100%" @selection-change="handleSelectionChange">
+            <el-table-column type="index" :index="indexMethod"></el-table-column>
+            <el-table-column type="selection" width="55">
             </el-table-column>
-            <el-table-column prop="name" label="姓名" width="180">
+            <el-table-column prop="fullname" label="姓名" width="180">
             </el-table-column>
-            <el-table-column prop="address" label="地址">
+            <el-table-column prop="email" label="邮箱" width="180">
+            </el-table-column>
+            <el-table-column prop="phone" label="电话" width="180">
+            </el-table-column>
+            <el-table-column prop="createtime" label="日期">
+            </el-table-column>
+            <el-table-column prop="state" label="状态" width="180">
             </el-table-column>
         </el-table>
-        <el-pagination background layout="prev, pager, next" :total="100" :hide-on-single-page="true">
+        <el-pagination :background="true" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[10,15,20,30,50,100]" :page-size="10" layout="total, sizes, prev, pager, next, jumper" :total="total">
         </el-pagination>
     </el-main>
 
@@ -22,74 +28,31 @@
 </template>
 
 <script>
-import { Message } from 'element-ui';
+import {
+    Message
+} from 'element-ui';
 export default {
     name: 'per_base',
     data() {
         return {
             msg: '人员列表！',
+            currentPage: 1,
+            pageSize: 10,
+            total: 0,
+            loading: false,
             multipleSelection: [],
-            dataArr: [{
-                text: '2016-05-01',
-                value: '2016-05-01'
-            }, {
-                text: '2016-05-02',
-                value: '2016-05-02'
-            }, {
-                text: '2016-05-03',
-                value: '2016-05-03'
-            }, {
-                text: '2016-05-04',
-                value: '2016-05-04'
-            }],
-            tableData: [{
-                date: '2016-05-02',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1518 弄'
-            }, {
-                date: '2016-05-04',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1517 弄'
-            }, {
-                date: '2016-05-01',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1519 弄'
-            }, {
-                date: '2016-05-03',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1516 弄'
-            }, {
-                date: '2016-05-03',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1516 弄'
-            }, {
-                date: '2016-05-03',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1516 弄'
-            }, {
-                date: '2016-05-03',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1516 弄'
-            }, {
-                date: '2016-05-03',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1516 弄'
-            }, {
-                date: '2016-05-03',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1516 弄'
-            }, {
-                date: '2016-05-03',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1516 弄'
-            }]
+            tableData: []
         }
+    },
+    mounted() {
+        this.initList();
     },
     methods: {
         testClick() {
-            this.getRequest("/login", '').then(resp => {
-                console.log(123456);
-            })
+            this.initList();
+        },
+        indexMethod(index) {
+            return index + 1;
         },
         toggleSelection(rows) {
             if (rows) {
@@ -107,7 +70,27 @@ export default {
         dateFilter(value, row, column) {
             const property = column['property'];
             return row[property] == value;
+        },
+        handleSizeChange(toPageSize) {
+            this.pageSize = toPageSize;
+            this.initList();
+        },
+        handleCurrentChange(toPageNum) {
+            this.currentPage = toPageNum;
+            this.initList();
+        },
+        initList() {
+            this.loading = true;
+            let url = '/user/base/?page=' + this.currentPage + '&size=' + this.pageSize;
+            this.getRequest(url, '').then(resp => {
+                var _this = this;
+                _this.loading = false;
+                _this.tableData = resp.data.rows;
+                _this.total = resp.data.total;
+                _this.currentPage = resp.data.pageNum;
+            })
         }
+
     },
 }
 </script>

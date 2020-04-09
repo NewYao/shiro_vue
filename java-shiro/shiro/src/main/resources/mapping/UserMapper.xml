@@ -125,128 +125,37 @@
       state = #{state,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <resultMap id="BaseResultMap" type="cn.jnx.model.User">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="username" jdbcType="VARCHAR" property="username" />
-    <result column="password" jdbcType="VARCHAR" property="password" />
-    <result column="fullname" jdbcType="VARCHAR" property="fullname" />
-    <result column="email" jdbcType="VARCHAR" property="email" />
-    <result column="phone" jdbcType="VARCHAR" property="phone" />
-    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
-    <result column="state" jdbcType="INTEGER" property="state" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, username, password, fullname, email, phone, createtime, state
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  
+  <select id="getUserListByParams"  resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from user
-    where id = #{id,jdbcType=INTEGER}
+    from user u
+    <where>
+        <if test="user!=null">
+            <if test="user.username != null and user.username !=''">
+              and u.username = #{user.username,jdbcType=VARCHAR},
+            </if>
+            <if test="user.password != null and user.password != ''">
+              and u.password = #{user.password,jdbcType=VARCHAR},
+            </if>
+            <if test="user.fullname != null and user.fullname != ''">
+              and u.fullname = #{user.fullname,jdbcType=VARCHAR},
+            </if>
+            <if test="user.email != null and user.email !=''">
+              and u.email = #{user.email,jdbcType=VARCHAR},
+            </if>
+            <if test="user.phone != null and user.phone != ''">
+              and u.phone = #{user.phone,jdbcType=VARCHAR},
+            </if>
+            <if test="user.state != null">
+              and u.state = #{user.state,jdbcType=INTEGER},
+           </if>
+        </if>
+        <if test="beginDateScope !=null">
+              and u.createtime between #{beginDateScope[0]} and #{beginDateScope[1]}
+        </if>
+   </where>
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from user
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="cn.jnx.model.User">
-    insert into user (id, username, password, 
-      fullname, email, phone, 
-      createtime, state)
-    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
-      #{fullname,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
-      #{createtime,jdbcType=TIMESTAMP}, #{state,jdbcType=INTEGER})
-  </insert>
-  <insert id="insertSelective" parameterType="cn.jnx.model.User">
-    insert into user
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="username != null">
-        username,
-      </if>
-      <if test="password != null">
-        password,
-      </if>
-      <if test="fullname != null">
-        fullname,
-      </if>
-      <if test="email != null">
-        email,
-      </if>
-      <if test="phone != null">
-        phone,
-      </if>
-      <if test="createtime != null">
-        createtime,
-      </if>
-      <if test="state != null">
-        state,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="username != null">
-        #{username,jdbcType=VARCHAR},
-      </if>
-      <if test="password != null">
-        #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="fullname != null">
-        #{fullname,jdbcType=VARCHAR},
-      </if>
-      <if test="email != null">
-        #{email,jdbcType=VARCHAR},
-      </if>
-      <if test="phone != null">
-        #{phone,jdbcType=VARCHAR},
-      </if>
-      <if test="createtime != null">
-        #{createtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="state != null">
-        #{state,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="cn.jnx.model.User">
-    update user
-    <set>
-      <if test="username != null">
-        username = #{username,jdbcType=VARCHAR},
-      </if>
-      <if test="password != null">
-        password = #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="fullname != null">
-        fullname = #{fullname,jdbcType=VARCHAR},
-      </if>
-      <if test="email != null">
-        email = #{email,jdbcType=VARCHAR},
-      </if>
-      <if test="phone != null">
-        phone = #{phone,jdbcType=VARCHAR},
-      </if>
-      <if test="createtime != null">
-        createtime = #{createtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="state != null">
-        state = #{state,jdbcType=INTEGER},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="cn.jnx.model.User">
-    update user
-    set username = #{username,jdbcType=VARCHAR},
-      password = #{password,jdbcType=VARCHAR},
-      fullname = #{fullname,jdbcType=VARCHAR},
-      email = #{email,jdbcType=VARCHAR},
-      phone = #{phone,jdbcType=VARCHAR},
-      createtime = #{createtime,jdbcType=TIMESTAMP},
-      state = #{state,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
+  
 </mapper>
+  

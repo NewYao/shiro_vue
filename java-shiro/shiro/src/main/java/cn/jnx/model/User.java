@@ -2,19 +2,25 @@ package cn.jnx.model;
 
 import java.util.Date;
 
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class User {
     private Integer id;
 
     private String username;
 
     private String password;
-
+    
     private String fullname;
 
     private String email;
 
     private String phone;
-
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat( pattern ="yyyy-MM-dd HH:mm:ss")
     private Date createtime;
 
     private Integer state;
