@@ -9,7 +9,7 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 axios.defaults.withCredentials = true
 // Set config defaults when creating the instance
 
-let base = 'http://192.168.0.69';
+let base = 'http://127.0.0.1';
 
 
 // 添加请求拦截器
@@ -18,23 +18,30 @@ axios.interceptors.request.use(function (config) {
     // console.log(config);
     // 在发送请求之前做些什么
     return config;
-  }, function (error) {
+}, function (error) {
     // 对请求错误做些什么
     // console.log('before--err');
     // return Promise.reject(error);
-  });
+});
 
 
 // 添加响应拦截器
 axios.interceptors.response.use(success => {
     // console.log('after--ok');
     // console.log(success)
-    if(success.status && success.status == 200 && success.data.code == 500){
-        Message.error({message:error.data.msg})
+    if (success.status && success.status == 200 && success.data.code == 500) {
+        Message.error({ message: error.data.msg })
         return;
     }
     if (success.data.msg) {
-        Message.success({message: success.data.msg})
+        switch (success.data.code) {
+            case 200:
+                Message.success({ message: success.data.msg })
+                break;
+            case 400:
+                Message.error({ message: success.data.msg })
+                break;
+        }
     }
     console.log(success.data)
     return success.data;
@@ -95,7 +102,7 @@ export const postKeyValueRequest = (url, params) => {
             return ret;
         }],
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
         }
     });
 }

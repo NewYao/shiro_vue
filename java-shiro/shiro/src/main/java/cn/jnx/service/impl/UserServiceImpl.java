@@ -30,4 +30,9 @@ public class UserServiceImpl implements UserService {
         return pageInfo;
     }
 
+    @Override
+    public int deleteUserById(Integer id) {
+        return userMapper.deleteByPrimaryKey(id);
+    }
+
 }
