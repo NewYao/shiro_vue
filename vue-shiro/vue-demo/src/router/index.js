@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import login from '@/views/login'
 import index from '@/views/index'
 import Unknown from '@/views/404'
 import per_base from '@/views/personnel/base'
@@ -12,7 +11,7 @@ export default new Router({
     {
       path: '/',
       name: 'login',
-      component: login
+      component: resolve => require(['@/views/login'], resolve),
     },
     {
       path: '/index',

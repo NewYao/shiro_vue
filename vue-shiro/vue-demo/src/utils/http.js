@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Message } from 'element-ui';
-
+import Qs from 'qs';
 //请求超时时间
 axios.defaults.timeout = 10000;
 //默认请求头
@@ -29,7 +29,7 @@ axios.interceptors.request.use(function (config) {
 axios.interceptors.response.use(success => {
     // console.log('after--ok');
     // console.log(success)
-    if (success.status && success.status == 200 && success.data.code == 500) {
+    if (success.status && success.status != 200 && success.data.code == 500) {
         Message.error({ message: error.data.msg })
         return;
     }
@@ -41,6 +41,9 @@ axios.interceptors.response.use(success => {
             case 400:
                 Message.error({ message: success.data.msg })
                 break;
+            default:
+                Message.error({ message: success.data.msg })
+
         }
     }
     console.log(success.data)
@@ -48,6 +51,7 @@ axios.interceptors.response.use(success => {
 }, error => {
     console.log('after--err');
     console.log(error);
+    Message.error({ message: error })
     return;
 });
 
@@ -63,7 +67,8 @@ export const putRequest = (url, params) => {
     return axios({
         method: 'PUT',
         url: `${base}${url}`,
-        data: params
+        data: Qs.stringify(params)
+        //data: params
     })
 }
 

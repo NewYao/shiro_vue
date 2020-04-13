@@ -13,7 +13,7 @@
         <el-button @click="testClick" size="mini" type="primary">查询</el-button>
     </el-header>
     <el-main>
-        <el-table  v-loading="loading" element-loading-text="拼命加载中"   :stripe="true" :highlight-current-row="true" size="mini" :data="tableData" border style="width: 100%" @selection-change="handleSelectionChange">
+        <el-table v-loading="loading" element-loading-text="拼命加载中" :stripe="true" :highlight-current-row="true" size="small" :data="tableData" border style="width: 100%" @selection-change="handleSelectionChange">
             <el-table-column type="index" :index="indexMethod" fixed="left"></el-table-column>
             <el-table-column type="selection" width="55" fixed="left">
             </el-table-column>
@@ -25,13 +25,19 @@
             </el-table-column>
             <el-table-column prop="createtime" label="日期">
             </el-table-column>
-            <el-table-column prop="state" label="状态" width="180" :formatter="formatState">
+            <el-table-column prop="state" label="状态" width="150">
+                <template slot-scope="scope">
+                    <span v-if="1 == scope.row.state" style='color:#67C23A'>活动</span>
+                    <span v-else style='color:#909399'>禁用</span>
+                </template>
             </el-table-column>
-            <el-table-column label="操作" fixed="right" width="150">
+            <el-table-column label="操作" fixed="right" width="200">
                 <template slot-scope="scope">
                     <el-button @click="handleClick(scope.row,1)" type="primary" :loading="false" size="mini">查看</el-button>
-                    <el-button @click="handleClick(scope.row,2)" type="danger" :loading="false" size="mini">删除</el-button>
+                    <el-button v-if="scope.row.state == 1" @click="handleClick(scope.row,4)" type="info" size="mini">禁用</el-button>
+                    <el-button v-if="scope.row.state == 2" @click="handleClick(scope.row,5)" type="success" size="mini">启用</el-button>
                     <el-button @click="handleClick(scope.row,3)" type="button" size="mini">编辑</el-button>
+                    <el-button @click="handleClick(scope.row,2)" type="danger" :loading="false" size="mini">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -50,11 +56,11 @@ export default {
     data() {
         return {
             searchData: {
-                fullname: null,
-                phone: null,
-                email: null,
-                state: null,
-                beginDateScope: null,
+                fullname: '',
+                phone: '',
+                email: '',
+                state: '',
+                beginDateScope: '',
             },
             pickerOptions: {
                 shortcuts: [{
@@ -85,7 +91,7 @@ export default {
             },
             states: [{
                     value: 1,
-                    label: '正常'
+                    label: '活动'
                 },
                 {
                     value: 2,
@@ -122,7 +128,7 @@ export default {
                 }).then(() => {
                     this.deleteRequest('/user/base/' + row.id).then(resp => {
                         var _this = this;
-                        if (200 == resp.code) {
+                        if (resp && 200 == resp.code) {
                             this.initList();
                         }
                     })
@@ -135,6 +141,17 @@ export default {
 
             } else if (3 == tag) {
 
+            } else if (4 == tag || 5 == tag) {
+                /**禁用和启用 */
+                //复制一个对象，但取消和源对象的关联性
+                var this_row = Object.assign({}, row);
+                var _state = 4 == tag ? 2 : 1;
+                this_row.state = _state;
+                this.putRequest('/user/base/', this_row).then(resp => {
+                    if (resp && 200 == resp.code) {
+                        this.initList();
+                    }
+                })
             }
         },
         toggleSelection(rows) {
@@ -164,12 +181,13 @@ export default {
         },
         /**格式化状态显示 */
         formatState(row, column, cellValue, index) {
-            return 1 == cellValue ? "正常" : "禁用";
+            return 1 == cellValue ? "<span style='color:green'>正常</span>" : "<span style='color:red'>禁用</span>";
         },
         /**列表查询 */
         initList() {
             this.loading = true;
             let url = '/user/base/?page=' + this.currentPage + '&size=' + this.pageSize;
+
             if (this.searchData.fullname) {
                 url += "&fullname=" + this.searchData.fullname;
             }

@@ -6,12 +6,13 @@ import java.util.Date;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class User {
     private Integer id;
 
     private String username;
-
+    @JsonIgnore
     private String password;
     
     private String fullname;

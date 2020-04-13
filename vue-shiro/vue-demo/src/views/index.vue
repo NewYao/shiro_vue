@@ -67,9 +67,9 @@
         <el-main>
             <el-breadcrumb separator-class="el-icon-arrow-right" v-if="$router.currentRoute.path!='/index'">
                 <el-breadcrumb-item :to="{ path: '/index' }">首页</el-breadcrumb-item>
-                <el-breadcrumb-item>{{this.$router.currentRoute.name}}</el-breadcrumb-item>
+                <el-breadcrumb-item>{{$router.currentRoute.name}}</el-breadcrumb-item>
             </el-breadcrumb>
-            <div v-if="this.$router.currentRoute.path=='/index'">
+            <div v-if="$router.currentRoute.path=='/index'">
                 <h1>欢迎来到旭旭小镇！</h1>
             </div>
             <router-view  class="homeRouterView" ></router-view>
