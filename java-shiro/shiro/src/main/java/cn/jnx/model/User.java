@@ -14,6 +14,8 @@ public class User {
     private String username;
     @JsonIgnore
     private String password;
+    @JsonIgnore
+    private String salt;
     
     private String fullname;
 
@@ -89,4 +91,13 @@ public class User {
     public void setState(Integer state) {
         this.state = state;
     }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+    
 }

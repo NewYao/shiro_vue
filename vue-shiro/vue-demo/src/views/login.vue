@@ -11,7 +11,7 @@
             <div class="w">
                 <div class="login-form">
                     <div class="login-space">
-                        <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign" @submit.native.prevent>
+                        <el-form @submit.native.prevent :label-position="labelPosition" label-width="80px" :model="formLabelAlign">
                             <el-form-item label="用户名" prop="name">
                                 <el-input prefix-icon="el-icon-user" v-model="formLabelAlign.name" clearable></el-input>
                             </el-form-item>
@@ -57,8 +57,8 @@ export default {
         return {
             labelPosition: 'top',
             formLabelAlign: {
-                name: '',
-                pass: '',
+                name: 'admin1',
+                pass: '111111',
                 type: ''
             },
             abc: '1111',
@@ -66,9 +66,17 @@ export default {
     },
     methods: {
         submitForm() {
-            console.log('submit!');
-            // 字符串
-            this.$router.push('index');
+            this.postRequest('/login', this.formLabelAlign).then(resp => {
+                if (resp.code == 200) {
+                    var _this = this;
+                    this.$message.success('登陆成功！正在跳转。。。');
+                    setTimeout(function () {
+                        _this.$router.replace('index');
+                    }, 3000);
+
+                }
+            })
+
         },
         resetForm() {
             console.log('resetForm!');

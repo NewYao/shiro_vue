@@ -11,4 +11,8 @@ public interface UserService {
     public int deleteUserById(Integer id);
 
     public int updateUser(User user);
+    
+    public User selectByUserName(String username);
+    
+    public User selectByPhone(String phone);
 }

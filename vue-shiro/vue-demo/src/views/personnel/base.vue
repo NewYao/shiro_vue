@@ -17,15 +17,17 @@
             <el-table-column type="index" :index="indexMethod" fixed="left"></el-table-column>
             <el-table-column type="selection" width="55" fixed="left">
             </el-table-column>
-            <el-table-column prop="fullname" label="姓名" width="180" fixed="left">
+            <el-table-column prop="username" label="登录名" fixed="left">
             </el-table-column>
-            <el-table-column prop="email" label="邮箱" width="180">
+            <el-table-column prop="fullname" label="姓名" fixed="left">
             </el-table-column>
-            <el-table-column prop="phone" label="电话" width="180">
+            <el-table-column prop="email" label="邮箱">
+            </el-table-column>
+            <el-table-column prop="phone" label="电话">
             </el-table-column>
             <el-table-column prop="createtime" label="日期">
             </el-table-column>
-            <el-table-column prop="state" label="状态" width="150">
+            <el-table-column prop="state" label="状态">
                 <template slot-scope="scope">
                     <span v-if="1 == scope.row.state" style='color:#67C23A'>活动</span>
                     <span v-else style='color:#909399'>禁用</span>
@@ -126,7 +128,16 @@ export default {
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.deleteRequest('/user/base/' + row.id).then(resp => {
+                    if (row.id == 1) {
+                        this.$message({
+                            type: 'warning',
+                            message: '这是大哥，不能惹！'
+                        });
+                        return;
+                    }
+                    this.postRequest('/user/base/delete', {
+                        'id': row.id
+                    }).then(resp => {
                         var _this = this;
                         if (resp && 200 == resp.code) {
                             this.initList();
@@ -147,7 +158,7 @@ export default {
                 var this_row = Object.assign({}, row);
                 var _state = 4 == tag ? 2 : 1;
                 this_row.state = _state;
-                this.putRequest('/user/base/', this_row).then(resp => {
+                this.postRequest('/user/base/update', this_row).then(resp => {
                     if (resp && 200 == resp.code) {
                         this.initList();
                     }

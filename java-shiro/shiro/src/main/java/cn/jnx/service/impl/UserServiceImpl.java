@@ -40,4 +40,14 @@ public class UserServiceImpl implements UserService {
         return userMapper.updateByPrimaryKeySelective(user);
     }
 
+    @Override
+    public User selectByUserName(String username) {
+        return userMapper.selectByUserName(username);
+    }
+
+    @Override
+    public User selectByPhone(String phone) {
+        return userMapper.selectByPhone(phone);
+    }
+
 }

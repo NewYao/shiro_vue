@@ -7,10 +7,11 @@ axios.defaults.timeout = 10000;
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
 //默认携带缓存头
 axios.defaults.withCredentials = true
+
 // Set config defaults when creating the instance
 
-let base = 'http://127.0.0.1';
-
+let base = 'http://192.168.0.69';
+//let base = 'http://127.0.0.1';
 
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
@@ -23,7 +24,6 @@ axios.interceptors.request.use(function (config) {
     // console.log('before--err');
     // return Promise.reject(error);
 });
-
 
 // 添加响应拦截器
 axios.interceptors.response.use(success => {
@@ -59,7 +59,7 @@ export const postRequest = (url, params) => {
     return axios({
         method: 'POST',
         url: `${base}${url}`,
-        data: params
+        data: Qs.stringify(params)
     })
 }
 
