@@ -11,23 +11,26 @@
         <el-date-picker style="margin-left:5px;" value-format="yyyy-MM-dd" size="mini" v-model="searchData.beginDateScope" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
         </el-date-picker>
         <el-button @click="testClick" size="mini" type="primary">查询</el-button>
+        <el-button @click="openWindows" size="mini" type="success">新增用户</el-button>
     </el-header>
     <el-main>
         <el-table v-loading="loading" element-loading-text="拼命加载中" :stripe="true" :highlight-current-row="true" size="small" :data="tableData" border style="width: 100%" @selection-change="handleSelectionChange">
-            <el-table-column type="index" :index="indexMethod" fixed="left"></el-table-column>
-            <el-table-column type="selection" width="55" fixed="left">
+            <el-table-column type="index" :index="indexMethod" fixed></el-table-column>
+            <el-table-column type="selection" width="55" fixed>
             </el-table-column>
-            <el-table-column prop="username" label="登录名" fixed="left">
+            <el-table-column prop="fullname" label="姓名" fixed width="120">
             </el-table-column>
-            <el-table-column prop="fullname" label="姓名" fixed="left">
+            <el-table-column prop="username" label="登录名" width="120">
             </el-table-column>
-            <el-table-column prop="email" label="邮箱">
+            <el-table-column prop="password" label="密码" width="120">
             </el-table-column>
-            <el-table-column prop="phone" label="电话">
+            <el-table-column prop="email" label="邮箱" width="120">
             </el-table-column>
-            <el-table-column prop="createtime" label="日期">
+            <el-table-column prop="phone" label="电话" width="120">
             </el-table-column>
-            <el-table-column prop="state" label="状态">
+            <el-table-column prop="createtime" label="注册日期" width="150">
+            </el-table-column>
+            <el-table-column prop="state" label="状态" width="120">
                 <template slot-scope="scope">
                     <span v-if="1 == scope.row.state" style='color:#67C23A'>活动</span>
                     <span v-else style='color:#909399'>禁用</span>
@@ -46,6 +49,71 @@
         <el-pagination :background="true" @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[10,15,20,30,50,100]" :page-size="10" layout="total, sizes, prev, pager, next, jumper" :total="total">
         </el-pagination>
     </el-main>
+    <el-dialog :title="detail.title" :visible.sync="detail.dialogVisible" width="70%">
+        <div>
+            <el-form :model="user" ref="empForm">
+                <el-row>
+                    <el-col :span="8">
+                        <el-form-item label="登录名:" prop="username">
+                            <el-input size="small" style="width: 150px" prefix-icon="el-icon-edit" v-model="user.username" clearable placeholder="请输入登录名"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                        <el-form-item label="密码" prop="password">
+                            <el-input type="password" size="small" style="width: 180px" v-model="user.password" placeholder="请输入密码" show-password></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                        <el-form-item label="确认密码" prop="repassword">
+                            <el-input type="password" size="small" style="width: 180px" v-model="user.repassword" placeholder="请再次输入密码" show-password></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="8">
+                        <el-form-item label="真实姓名:" prop="fullname">
+                            <el-input size="small" style="width: 150px" prefix-icon="el-icon-edit" v-model="user.fullname" placeholder="请输入员工姓名"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                        <el-form-item label="出生日期">
+                            <el-date-picker size="small" v-model="user.birthday" type="date" placeholder="选择日期">
+                            </el-date-picker>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                        <el-form-item label="性别:" prop="gender">
+                            <el-radio-group v-model="user.gender">
+                                <el-radio label="男">男</el-radio>
+                                <el-radio label="女">女</el-radio>
+                            </el-radio-group>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="8">
+                        <el-form-item label="邮箱:" prop="email">
+                            <el-input size="small" style="width: 150px" prefix-icon="el-icon-edit" v-model="user.email" placeholder="请输入邮箱"></el-input>
+                            <el-select v-model="select" slot="prepend" placeholder="请选择">
+                                <el-option label="餐厅名" value="1"></el-option>
+                                <el-option label="订单号" value="2"></el-option>
+                                <el-option label="用户电话" value="3"></el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="8">
+                        <el-form-item label="电话:" prop="phone">
+                            <el-input size="small" style="width: 150px" prefix-icon="el-icon-edit" v-model="user.phone" placeholder="请输入电话"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+            </el-form>
+        </div>
+        <span slot="footer" class="dialog-footer">
+            <el-button @click="detail.dialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="doAddUser">确 定</el-button>
+        </span>
+    </el-dialog>
 </el-container>
 </template>
 
@@ -100,6 +168,21 @@ export default {
                     label: '禁用'
                 }
             ],
+            detail: {
+                title: '',
+                dialogVisible: false,
+            },
+            user: {
+                id: '',
+                username: '',
+                password: '',
+                repassword: '',
+                fullname: '',
+                gender: '',
+                email: '',
+                phone: '',
+                birthday: ''
+            },
             currentPage: 1,
             pageSize: 10,
             total: 0,
@@ -193,6 +276,18 @@ export default {
         /**格式化状态显示 */
         formatState(row, column, cellValue, index) {
             return 1 == cellValue ? "<span style='color:green'>正常</span>" : "<span style='color:red'>禁用</span>";
+        },
+        //开启新增窗口
+        openWindows() {
+            this.detail.title = '新增用户';
+            this.detail.dialogVisible = true;
+        },
+        doAddUser() {
+            this.postRequest('/user/base/add', this.user).then(resp => {
+                if (resp && 200 == resp.code) {
+                    this.initList();
+                }
+            })
         },
         /**列表查询 */
         initList() {

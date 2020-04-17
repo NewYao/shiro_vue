@@ -1,5 +1,7 @@
 package cn.jnx.service.impl;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,4 +52,32 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectByPhone(phone);
     }
 
+    @Override
+    public int addUser(User user) {
+        return userMapper.insertSelective(user);
+    }
+
+    @Override
+    public Object queryByDate(String[] date) {
+        String date1 = date[0];
+        String date2 = date[1];
+        int num = calcBetweenDate(date1, date2);
+        String[] countArr = new String[num];
+        System.out.println(num);
+        return userMapper.queryByDate(date1,countArr);
+    }
+    
+    public int calcBetweenDate(String start, String end) {  
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");  
+        Date startDate = null;  
+        Date endDate = null;  
+        try {  
+            startDate = df.parse(start);  
+            endDate = df.parse(end);  
+        } catch (Exception e) {  
+            System.out.println("日期转换出错");  
+        }  
+        int count = (int) ((endDate.getTime() - startDate.getTime()) / (24 * 60 * 60 * 1000));  
+        return count;  
+    }  
 }

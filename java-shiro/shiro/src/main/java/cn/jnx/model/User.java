@@ -12,7 +12,7 @@ public class User {
     private Integer id;
 
     private String username;
-    @JsonIgnore
+    //@JsonIgnore
     private String password;
     @JsonIgnore
     private String salt;

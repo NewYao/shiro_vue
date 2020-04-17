@@ -19,6 +19,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public ReturnJson handleException(Exception e) {
+        System.out.println("系统错误："+e.getMessage());
         return new ReturnJson().error().message("系统错误，请稍后重试！");
     }
 

@@ -1,6 +1,7 @@
 package cn.jnx.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -29,4 +30,6 @@ public interface UserMapper {
     User selectByUserName(String username);
     
     User selectByPhone(String phone);
+
+    List<Map<String,Object>> queryByDate(@Param("date")String date, @Param("countArr")String[] countArr);
 }

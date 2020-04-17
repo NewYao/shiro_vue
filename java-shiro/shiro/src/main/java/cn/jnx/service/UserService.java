@@ -15,4 +15,8 @@ public interface UserService {
     public User selectByUserName(String username);
     
     public User selectByPhone(String phone);
+
+    public int addUser(User user);
+
+    public Object queryByDate(String[] date);
 }

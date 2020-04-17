@@ -72,7 +72,7 @@ export default {
                     this.$message.success('登陆成功！正在跳转。。。');
                     setTimeout(function () {
                         _this.$router.replace('index');
-                    }, 3000);
+                    }, 1500);
 
                 }
             })

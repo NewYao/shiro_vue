@@ -4,7 +4,7 @@ import Qs from 'qs';
 //请求超时时间
 axios.defaults.timeout = 10000;
 //默认请求头
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
+axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
 //默认携带缓存头
 axios.defaults.withCredentials = true
 
@@ -41,6 +41,9 @@ axios.interceptors.response.use(success => {
             case 400:
                 Message.error({ message: success.data.msg })
                 break;
+            case 403:
+                Message.warning({ message: success.data.msg })
+                break;
             default:
                 Message.error({ message: success.data.msg })
 
@@ -76,7 +79,7 @@ export const getRequest = (url, params) => {
     return axios({
         method: 'GET',
         url: `${base}${url}`,
-        data: params
+        data: Qs.stringify(params)
     })
 }
 

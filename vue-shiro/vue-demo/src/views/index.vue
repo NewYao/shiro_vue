@@ -1,16 +1,16 @@
 <template>
 <el-container>
     <el-header>
-        <router-link to="/"><span class="header_left" >小旭旭的夏日</span></router-link>
+        <router-link to="/"><span class="header_left">小旭旭的夏日</span></router-link>
         <div class="header_right">
-            <el-dropdown  @command="handleCommand">
+            <el-dropdown @command="handleCommand">
                 <span class="el-dropdown-link">
                     <i class="el-icon-arrow-down el-icon-user"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item command="1">个人中心</el-dropdown-item>
                     <el-dropdown-item command="2">设置</el-dropdown-item>
-                    <el-dropdown-item command="3" divided >注销</el-dropdown-item>
+                    <el-dropdown-item command="3" divided>注销</el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>
         </div>
@@ -72,7 +72,7 @@
             <div v-if="$router.currentRoute.path=='/index'">
                 <h1>欢迎来到旭旭小镇！</h1>
             </div>
-            <router-view  class="homeRouterView" ></router-view>
+            <router-view class="homeRouterView"></router-view>
         </el-main>
     </el-container>
 </el-container>
@@ -99,16 +99,25 @@ export default {
             this.isCollapse = !flag;
         },
         handleCommand(command) {
-        this.$message('click on item ' + command);
-            if(command=='1'){
+            this.$message('click on item ' + command);
+            var _this = this;
+            if (command == '1') {
 
-            }else if(command=='2'){
+            } else if (command == '2') {
 
-            }else if(command=='3'){
-                this.$router.replace("/");
+            } else if (command == '3') {
+                
+                _this.getRequest("/logout", '').then(resp => {
+                    
+                    if (resp.code == 200) {
+                        setTimeout(function () {
+                            _this.$router.replace('/');
+                        }, 1500);
+                    }
+                });
             }
-        
-      }
+
+        }
     }
 };
 </script>
@@ -168,8 +177,7 @@ export default {
     min-height: 400px;
 }
 
-
-.homeRouterView{
+.homeRouterView {
     margin-top: 10px;
 }
 </style>

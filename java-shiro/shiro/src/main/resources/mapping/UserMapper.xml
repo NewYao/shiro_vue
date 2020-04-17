@@ -173,9 +173,10 @@
 				</if>
 			</if>
 			<if test="beginDateScope !=null">
-				and u.createtime between #{beginDateScope[0]} and #{beginDateScope[1]}
+				and date_format(u.createtime,'%Y-%m-%d') between #{beginDateScope[0]} and #{beginDateScope[1]}
 			</if>
 		</where>
+		order by u.id desc
 	</select>
 	<select id="selectByUserName" resultMap="BaseResultMap">
 		select
@@ -189,6 +190,20 @@
 		<include refid="Base_Column_List" />
 		from user u
 		where u.phone = #{phone,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="queryByDate" resultType="java.util.HashMap">
+	   select count(u.id) as count,s.date from 
+		(select date_add('2020-04-01',interval @i:=@i+1 day) as date 
+		from (
+		select 1 
+	   	<foreach item="index" collection="countArr">
+		  union all select 1 
+		</foreach>
+		) as tmp,
+		 (select @i:= -1) t
+		) s left join user u on s.date = date_format(u.createtime,'%Y-%m-%d')
+		GROUP BY s.date
 	</select>
 </mapper>
   

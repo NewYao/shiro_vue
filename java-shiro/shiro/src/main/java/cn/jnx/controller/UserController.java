@@ -1,16 +1,13 @@
 package cn.jnx.controller;
 
-import org.apache.shiro.authz.annotation.RequiresGuest;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.authz.annotation.RequiresUser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
@@ -49,4 +46,20 @@ public class UserController {
         }
         return new ReturnJson().fail().message("更改失败！");
     }
+    
+    @PostMapping("/add")
+    @RequiresRoles("admin")
+    public ReturnJson addUser(User user) {
+        if(userService.addUser(user) == 1) {
+            return new ReturnJson().ok().message("新增成功！");
+        }
+        return new ReturnJson().fail().message("新增失败！");
+    }
+    
+    
+    @PostMapping("/queryByDate")
+    public ReturnJson queryByDate(String[] date) {
+        return new ReturnJson().ok().data(userService.queryByDate(date));
+    }
+    
 }

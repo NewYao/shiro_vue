@@ -10,14 +10,16 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.jnx.model.ReturnJson;
 
 @RestController
 public class ShiroController {
-    @GetMapping("/unauthorized")
+    @RequestMapping("/unauthorized")
     public ReturnJson unauthorized() {
+        System.out.println("未登录");
         return new ReturnJson().invalid();
     }
 
@@ -45,6 +47,14 @@ public class ShiroController {
             // 其他未指定异常
             return new ReturnJson().fail().message("未知异常！");
         }
+        return new ReturnJson().ok();
+    }
+    
+    @GetMapping("/logout")
+    public ReturnJson logout() {
+        System.out.println("退出！");
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
         return new ReturnJson().ok();
     }
 }
