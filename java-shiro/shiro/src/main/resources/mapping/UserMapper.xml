@@ -172,7 +172,7 @@
 					and u.state = #{user.state,jdbcType=INTEGER}
 				</if>
 			</if>
-			<if test="beginDateScope !=null">
+			<if test="beginDateScope !=null and beginDateScope.length!= 0">
 				and date_format(u.createtime,'%Y-%m-%d') between #{beginDateScope[0]} and #{beginDateScope[1]}
 			</if>
 		</where>

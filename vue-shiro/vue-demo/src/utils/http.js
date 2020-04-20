@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { Message } from 'element-ui';
 import Qs from 'qs';
+import router from '../router'
+
 //请求超时时间
 axios.defaults.timeout = 10000;
 //默认请求头
@@ -11,7 +13,7 @@ axios.defaults.withCredentials = true
 // Set config defaults when creating the instance
 
 let base = 'http://192.168.0.69';
-//let base = 'http://127.0.0.1';
+// let base = '';
 
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
@@ -33,6 +35,7 @@ axios.interceptors.response.use(success => {
         Message.error({ message: error.data.msg })
         return;
     }
+    var _this = this;
     if (success.data.msg) {
         switch (success.data.code) {
             case 200:
@@ -40,6 +43,11 @@ axios.interceptors.response.use(success => {
                 break;
             case 400:
                 Message.error({ message: success.data.msg })
+                break;
+            case 401:
+                //未登录
+                Message.warning({ message: success.data.msg })
+                router.replace('/');
                 break;
             case 403:
                 Message.warning({ message: success.data.msg })

@@ -41,6 +41,8 @@ public class ShiroConfig {
         // 配置不会被拦截的链接 顺序判断
         filterChainDefinitionMap.put("/static/**", "anon");
         filterChainDefinitionMap.put("/login", "anon");
+        filterChainDefinitionMap.put("/unauthorized", "anon");
+        filterChainDefinitionMap.put("/", "anon");
         // 配置退出 过滤器，其中具体的退出代码Shiro已经替我们实现了
         filterChainDefinitionMap.put("/logout", "anon");
         // 过滤链定义，从上向下顺序执行，一般将'/**'放在最为下边 因为保存在LinkedHashMap中，顺序很重要
@@ -50,7 +52,7 @@ public class ShiroConfig {
         // --------------------------------------------------
         // 前后端分离使用下面设置
         // shiroFilterFactoryBean.setLoginUrl("/login.html");
-        shiroFilterFactoryBean.setLoginUrl("/unauthorized");
+        shiroFilterFactoryBean.setLoginUrl("/unLogin");
         // ---------------------------------------------------
         // 登录成功后跳转的链接,前后端分离不用设置
         // shiroFilterFactoryBean.setSuccessUrl("/index");

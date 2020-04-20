@@ -106,13 +106,11 @@ export default {
             } else if (command == '2') {
 
             } else if (command == '3') {
-                
-                _this.getRequest("/logout", '').then(resp => {
-                    
+                _this.postRequest("/logout", '').then(resp => {
                     if (resp.code == 200) {
                         setTimeout(function () {
                             _this.$router.replace('/');
-                        }, 1500);
+                        }, 500);
                     }
                 });
             }

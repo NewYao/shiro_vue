@@ -1,6 +1,8 @@
 package cn.jnx.common.Exception;
 
 import org.apache.shiro.ShiroException;
+import org.apache.shiro.authz.UnauthenticatedException;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,7 +21,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public ReturnJson handleException(Exception e) {
-        System.out.println("系统错误："+e.getMessage());
+        System.out.println("系统错误："+e.getStackTrace());
         return new ReturnJson().error().message("系统错误，请稍后重试！");
     }
 
@@ -36,10 +38,28 @@ public class GlobalExceptionHandler {
     }
 
     // 捕捉shiro的异常
-    @ExceptionHandler(ShiroException.class)
+    @ExceptionHandler(UnauthenticatedException.class)
     @ResponseBody
     public ReturnJson handle401() {
+        System.out.println("登录全局捕获器");
+        return new ReturnJson().unLogin().message("您没有登录！");
+    }
+    
+    // 捕捉shiro的异常
+    @ExceptionHandler(UnauthorizedException.class)
+    @ResponseBody
+    public ReturnJson handle403() {
+        System.out.println("权限全局捕获器");
         return new ReturnJson().invalid().message("您没有权限访问！");
     }
-
+    
+    
+    // 捕捉shiro的异常
+    @ExceptionHandler(ShiroException.class)
+    @ResponseBody
+    public ReturnJson shiro() {
+        System.out.println("shiro全局捕获器");
+        return new ReturnJson().invalid().message("您没有权限访问！");
+    }
+    
 }

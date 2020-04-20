@@ -188,7 +188,8 @@ export default {
             total: 0,
             loading: false,
             multipleSelection: [],
-            tableData: []
+            tableData: [],
+            select: ''
         }
     },
     mounted() {
@@ -292,29 +293,18 @@ export default {
         /**列表查询 */
         initList() {
             this.loading = true;
-            let url = '/user/base/?page=' + this.currentPage + '&size=' + this.pageSize;
-
-            if (this.searchData.fullname) {
-                url += "&fullname=" + this.searchData.fullname;
-            }
-            if (this.searchData.phone) {
-                url += "&phone=" + this.searchData.phone;
-            }
-            if (this.searchData.email) {
-                url += "&email=" + this.searchData.email;
-            }
-            if (this.searchData.state) {
-                url += "&state=" + this.searchData.state;
-            }
-            if (this.searchData.beginDateScope) {
-                url += "&beginDateScope=" + this.searchData.beginDateScope;
-            }
-            this.getRequest(url, '').then(resp => {
+            var search_data = Object.assign({}, this.searchData);
+            search_data.page = this.currentPage;
+            search_data.size = this.pageSize;
+            this.postRequest('/user/base/', search_data).then(resp => {
                 var _this = this;
-                _this.loading = false;
-                _this.tableData = resp.data.rows;
-                _this.total = resp.data.total;
-                _this.currentPage = resp.data.pageNum;
+                if (resp.code == 200) {
+                    _this.loading = false;
+                    _this.tableData = resp.data.rows;
+                    _this.total = resp.data.total;
+                    _this.currentPage = resp.data.pageNum;
+                }
+
             })
         }
 

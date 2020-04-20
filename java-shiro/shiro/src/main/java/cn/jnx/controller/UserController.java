@@ -22,7 +22,7 @@ public class UserController {
     @Autowired
     private UserService userService;
     
-    @GetMapping("/")
+    @PostMapping("/")
     @RequiresUser
     public ReturnJson getUserList(@RequestParam(defaultValue = "1") Integer page,
             @RequestParam(defaultValue = "10") Integer size, User user,String[] beginDateScope) {

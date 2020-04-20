@@ -8,22 +8,35 @@ import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.jnx.model.ReturnJson;
 
-@RestController
+@Controller
 public class ShiroController {
-    @RequestMapping("/unauthorized")
-    public ReturnJson unauthorized() {
+    /**
+     * 无权限访问时
+     * 
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/unLogin")
+    public ReturnJson unLogin() {
         System.out.println("未登录");
-        return new ReturnJson().invalid();
+        return new ReturnJson().unLogin().message("登录态失效！请重新登录！");
+    }
+
+    @RequestMapping("/")
+    public String a() {
+        System.out.println("进入首页");
+        return "/index.html";
     }
 
     @PostMapping("/login")
+    @ResponseBody
     public ReturnJson login(String name, String pass, String type) {
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(name, pass);
@@ -49,8 +62,9 @@ public class ShiroController {
         }
         return new ReturnJson().ok();
     }
-    
-    @GetMapping("/logout")
+
+    @PostMapping("/logout")
+    @ResponseBody
     public ReturnJson logout() {
         System.out.println("退出！");
         Subject subject = SecurityUtils.getSubject();

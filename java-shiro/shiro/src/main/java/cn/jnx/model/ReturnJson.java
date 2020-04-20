@@ -40,7 +40,15 @@ public class ReturnJson extends HashMap<String, Object> {
      * @return
      */
     public ReturnJson invalid() {this.put("result", "invalid");this.put("code", 403);return this;}
-
+    
+    /**
+     * 无权限
+     * 
+     * @param code
+     * @return
+     */
+    public ReturnJson unLogin() {this.put("result", "unLogin");this.put("code", 401);return this;}
+    
     /**
      * 服务器错误
      * 
