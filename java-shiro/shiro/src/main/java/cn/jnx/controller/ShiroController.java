@@ -1,5 +1,9 @@
 package cn.jnx.controller;
 
+import java.io.Serializable;
+
+import javax.validation.constraints.NotNull;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.ExcessiveAttemptsException;
@@ -11,14 +15,24 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.jnx.model.ReturnJson;
 import cn.jnx.util.rsa.KeyManager;
 import cn.jnx.util.rsa.RSAUtil;
+import cn.jnx.util.verification_code.Validate;
+import cn.jnx.util.verification_code.ValidateCodeUtil;
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Element;
 
 @Controller
 public class ShiroController {
+
+    private CacheManager cacheManager = CacheManager.getCacheManager("ehcache");
+    private Cache cache = cacheManager.getCache("verificationCodeCache");
+
     /**
      * 无权限访问时
      * 
@@ -39,8 +53,18 @@ public class ShiroController {
 
     @PostMapping("/login")
     @ResponseBody
-    public ReturnJson login(String name, String pass, String type) throws Exception {
+    public ReturnJson login(String name, String pass, String type, @RequestParam(defaultValue = "")  String verifyCode) throws Exception {
         Subject subject = SecurityUtils.getSubject();
+        String sessionId = subject.getSession().getId().toString();
+        Element ele = cache.get(sessionId);
+        if (ele == null) {
+            return new ReturnJson().fail().message("验证码已过期！");
+        }
+        String v_code = ele.getValue().toString();
+        if (!verifyCode.equalsIgnoreCase(v_code)) {
+            return new ReturnJson().fail().message("验证码不正确！");
+        }
+        
         UsernamePasswordToken token = new UsernamePasswordToken(name, RSAUtil.getTrueStr(pass));
         token.setRememberMe(false);
         try {
@@ -73,11 +97,22 @@ public class ShiroController {
         subject.logout();
         return new ReturnJson().ok();
     }
-    
+
     @PostMapping("/pubKey")
     @ResponseBody
     public ReturnJson pubKey() {
         System.out.println("获取公钥!");
         return new ReturnJson().ok().data(KeyManager.getPublic_key());
+    }
+
+    @PostMapping("/valiCode")
+    @ResponseBody
+    public ReturnJson valiCode() {
+        Validate v = ValidateCodeUtil.getRandomCode();
+        Subject subject = SecurityUtils.getSubject();
+        String sessionId = subject.getSession().getId().toString();
+        Element ele = new Element(sessionId, v.getValue());
+        cache.put(ele);// 存放ehcache缓存中
+        return new ReturnJson().ok().data(v.getBase64Str());
     }
 }

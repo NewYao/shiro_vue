@@ -72,5 +72,20 @@
            overflowToDisk="false"
            statistics="true">
     </cache>
-
+    
+    <!-- 验证码 -->
+    <!--  
+    maxEntriesLocalHeap：指定允许在内存中存放元素的最大数量，0表示不限制
+    timeToIdleSeconds:允许闲置的最大时间
+    eternal:是否永恒
+    timeToLiveSeconds:无论一个元素闲置与否，其允许在Cache中存在的最大时间
+    -->
+    <cache name="verificationCodeCache"
+           maxEntriesLocalHeap="5000"
+           eternal="false"
+           timeToIdleSeconds="90"
+           timeToLiveSeconds="120"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
 </ehcache>

@@ -1,5 +1,7 @@
 package cn.jnx.common.Exception;
 
+import javax.crypto.BadPaddingException;
+
 import org.apache.shiro.ShiroException;
 import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.authz.UnauthorizedException;
@@ -13,19 +15,6 @@ import cn.jnx.model.ReturnJson;
 public class GlobalExceptionHandler {
 
     /**
-     * 处理所有不可知的异常
-     * 
-     * @param e
-     * @return
-     */
-    @ExceptionHandler(Exception.class)
-    @ResponseBody
-    public ReturnJson handleException(Exception e) {
-        System.out.println("系统错误："+e.getStackTrace());
-        return new ReturnJson().error().message("系统错误，请稍后重试！");
-    }
-
-    /**
      * 处理所有业务异常
      * 
      * @param e
@@ -37,14 +26,26 @@ public class GlobalExceptionHandler {
         return new ReturnJson().fail().message(e.getMessage());
     }
 
-    // 捕捉shiro的异常
-    @ExceptionHandler(UnauthenticatedException.class)
+    /**
+     * RSA解密异常
+     * 
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(BadPaddingException.class)
     @ResponseBody
-    public ReturnJson handle401() {
-        System.out.println("登录全局捕获器");
-        return new ReturnJson().unLogin().message("您没有登录！");
+    public ReturnJson handleBadPaddingException(Exception e) {
+        return new ReturnJson().fail().message(e.getMessage());
     }
-    
+
+    // 捕捉shiro的异常
+//    @ExceptionHandler(UnauthenticatedException.class)
+//    @ResponseBody
+//    public ReturnJson handle401() {
+//        System.out.println("登录全局捕获器");
+//        return new ReturnJson().unLogin().message("您没有登录！");
+//    }
+
     // 捕捉shiro的异常
     @ExceptionHandler(UnauthorizedException.class)
     @ResponseBody
@@ -52,8 +53,7 @@ public class GlobalExceptionHandler {
         System.out.println("权限全局捕获器");
         return new ReturnJson().invalid().message("您没有权限访问！");
     }
-    
-    
+
     // 捕捉shiro的异常
     @ExceptionHandler(ShiroException.class)
     @ResponseBody
@@ -61,5 +61,17 @@ public class GlobalExceptionHandler {
         System.out.println("shiro全局捕获器");
         return new ReturnJson().invalid().message("您没有权限访问！");
     }
-    
+
+    /**
+     * 处理所有不可知的异常
+     * 
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(Exception.class)
+    @ResponseBody
+    public ReturnJson handleException(Exception e) {
+        System.out.println("系统错误：" + e.getStackTrace());
+        return new ReturnJson().error().message("系统错误，请稍后重试！");
+    }
 }
