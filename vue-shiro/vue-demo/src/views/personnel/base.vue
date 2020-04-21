@@ -15,28 +15,28 @@
     </el-header>
     <el-main>
         <el-table v-loading="loading" element-loading-text="拼命加载中" :stripe="true" :highlight-current-row="true" size="small" :data="tableData" border style="width: 100%" @selection-change="handleSelectionChange">
-            <el-table-column type="index" :index="indexMethod" fixed></el-table-column>
-            <el-table-column type="selection" width="55" fixed>
+            <el-table-column type="index" :index="indexMethod" fixed align="center"></el-table-column>
+            <el-table-column type="selection" width="55" fixed align="center">
             </el-table-column>
-            <el-table-column prop="fullname" label="姓名" fixed width="120">
+            <el-table-column prop="fullname" label="姓名" fixed align="center">
             </el-table-column>
-            <el-table-column prop="username" label="登录名" width="120">
+            <el-table-column prop="username" label="登录名" align="center">
             </el-table-column>
-            <el-table-column prop="password" label="密码" width="120">
+            <el-table-column prop="password" label="密码" align="center">
             </el-table-column>
-            <el-table-column prop="email" label="邮箱" width="120">
+            <el-table-column prop="email" label="邮箱" align="center">
             </el-table-column>
-            <el-table-column prop="phone" label="电话" width="120">
+            <el-table-column prop="phone" label="电话" align="center">
             </el-table-column>
-            <el-table-column prop="createtime" label="注册日期" width="150">
+            <el-table-column prop="createtime" label="注册日期" width="150" align="center">
             </el-table-column>
-            <el-table-column prop="state" label="状态" width="120">
+            <el-table-column prop="state" label="状态" align="center">
                 <template slot-scope="scope">
                     <span v-if="1 == scope.row.state" style='color:#67C23A'>活动</span>
                     <span v-else style='color:#909399'>禁用</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" fixed="right" width="200">
+            <el-table-column label="操作" width="200" align="center">
                 <template slot-scope="scope">
                     <el-button @click="handleClick(scope.row,1)" type="primary" :loading="false" size="mini">查看</el-button>
                     <el-button v-if="scope.row.state == 1" @click="handleClick(scope.row,4)" type="info" size="mini">禁用</el-button>
