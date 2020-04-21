@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.jnx.model.ReturnJson;
+import cn.jnx.util.rsa.KeyManager;
+import cn.jnx.util.rsa.RSAUtil;
 
 @Controller
 public class ShiroController {
@@ -37,9 +39,9 @@ public class ShiroController {
 
     @PostMapping("/login")
     @ResponseBody
-    public ReturnJson login(String name, String pass, String type) {
+    public ReturnJson login(String name, String pass, String type) throws Exception {
         Subject subject = SecurityUtils.getSubject();
-        UsernamePasswordToken token = new UsernamePasswordToken(name, pass);
+        UsernamePasswordToken token = new UsernamePasswordToken(name, RSAUtil.getTrueStr(pass));
         token.setRememberMe(false);
         try {
             // 登录
@@ -70,5 +72,12 @@ public class ShiroController {
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
         return new ReturnJson().ok();
+    }
+    
+    @PostMapping("/pubKey")
+    @ResponseBody
+    public ReturnJson pubKey() {
+        System.out.println("获取公钥!");
+        return new ReturnJson().ok().data(KeyManager.getPublic_key());
     }
 }

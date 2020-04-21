@@ -1,4 +1,4 @@
-package cn.jnx.util;
+package cn.jnx.util.rsa;
 
 
 public class KeyManager {

@@ -1,4 +1,4 @@
-package cn.jnx.util;
+package cn.jnx.util.rsa;
 
 import java.io.IOException;
 import java.security.KeyFactory;
