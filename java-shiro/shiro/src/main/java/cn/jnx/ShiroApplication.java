@@ -6,9 +6,11 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @MapperScan("cn.jnx.mapper")
 @EnableAutoConfiguration
+@EnableScheduling // 启动定时函数,刷新秘钥策略
 @SpringBootApplication
 public class ShiroApplication extends SpringBootServletInitializer {
 
