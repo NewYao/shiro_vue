@@ -1,57 +1,40 @@
 <template>
-  <el-container>
-    <el-header>
-      <div class="header_main">
-        <span>马小旭的春天</span>
-      </div>
-    </el-header>
-    <el-main>
-      <div class="tips-wrap"></div>
-      <div class="login-wrap">
-        <div class="w">
-          <div class="login-form">
-            <div class="login-space">
-              <el-form @submit.native.prevent :label-position="labelPosition" label-width="80px"
-                :model="formLabelAlign">
-                <el-form-item label="用户名" prop="name">
-                  <el-input prefix-icon="el-icon-user" v-model="formLabelAlign.name" clearable>
-                  </el-input>
-                </el-form-item>
-                <el-form-item label="密码" prop="pass">
-                  <el-input prefix-icon="el-icon-s-cooperation" type="password" clearable
-                    show-password v-model="formLabelAlign.pass" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="验证码">
-                  <el-input type="text" maxlength="4" v-model="formLabelAlign.type" clearable>
-                    <el-button slot="append" @click="send_code">发送</el-button>
-                  </el-input>
-                </el-form-item>
-                <el-form-item class="form_sub_button">
-                  <el-button type="primary" @click="submitForm">登&nbsp;&nbsp;录</el-button>
-                  <el-button @click="resetForm">注&nbsp;&nbsp;册</el-button>
-                </el-form-item>
-              </el-form>
-            </div>
+
+  <div class="bodyArea">
+    <div class="stars"></div>
+
+    <div class="table">
+      <h2 style="color: white;">
+        <div class="login-form">
+          <div class="login-space">
+            <el-form @submit.native.prevent :label-position="labelPosition" label-width="80px"
+              :model="formLabelAlign" :rules="rules" hide-required-asterisk="true">
+              <el-form-item label="用户名" prop="name">
+                <el-input prefix-icon="el-icon-user" v-model="formLabelAlign.name" clearable autocomplete="off">
+                </el-input>
+              </el-form-item>
+              <el-form-item label="密码" prop="pass">
+                <el-input prefix-icon="el-icon-s-cooperation" type="password"
+                  show-password v-model="formLabelAlign.pass" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="验证码" class="verifyCodeArea" prop="verifyCode">
+                <el-input type="text" maxlength="4" v-model="formLabelAlign.verifyCode" autocomplete="off">
+                </el-input>
+                <img :src="verifyCodeImgSrc" @click="send_code" class="verifyCodeImg" />
+              </el-form-item>
+              <el-form-item class="form_sub_button">
+                <el-button type="primary" @click="submitForm">登&nbsp;&nbsp;录</el-button>
+                <el-button @click="resetForm">注&nbsp;&nbsp;册</el-button>
+              </el-form-item>
+            </el-form>
           </div>
         </div>
+      </h2>
+      <div
+        style="width: 100%;height: 200px;background: url(image/1000141.jpg) no-repeat;background-size: 100%;opacity: 0.5;">
       </div>
-      <div class="footer_data">
-        <el-progress type="circle" :percentage="0"></el-progress>
-        <el-progress type="circle" :percentage="25"></el-progress>
-        <el-progress type="circle" :percentage="100" status="success"></el-progress>
-        <el-progress type="circle" :percentage="50" status="exception"></el-progress>
-      </div>
-      <div class="footer_data_down">
-        <span>1</span>
-        <span>2</span>
-        <span>3</span>
-        <span>4</span>
-      </div>
-    </el-main>
-    <el-footer class="login_footer">
-      版权所有&copy;2020-2030
-    </el-footer>
-  </el-container>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -62,21 +45,58 @@ export default {
     return {
       labelPosition: 'top',
       formLabelAlign: {
-        name: 'admin1',
+        name: 'admin',
         pass: '111111',
-        type: ''
+        type: '',
+        verifyCode: ''
       },
       abc: '1111',
+      rules: {
+        name: [{ required: true, message: '请输入用户名', trigger: 'blur' }, { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }],
+        pass: [{ required: true, message: '请输入密码', trigger: 'blur' }, { min: 6, max: 16, message: '长度在 6 到 16 个字符', trigger: 'blur' }],
+        verifyCode: [{ required: true, message: '请输入验证码', trigger: 'blur' }],
+      },
+      verifyCodeImgSrc: '',//验证码图片路径
     };
   },
+  mounted() {
+    this.initStars();
+    this.getVerifyCode();
+  },
   methods: {
+    initStars() {
+      var stars = 800; /*星星的密集程度，数字越大越多*/
+      var $stars = $(".stars");
+      var r = 800; /*星星的看起来的距离,值越大越远,可自行调制到自己满意的样子*/
+      for (var i = 0; i < stars; i++) {
+        var $star = $("<div/>").addClass("star");
+        $stars.append($star);
+      }
+      $(".star").each(function () {
+        var cur = $(this);
+        var s = 0.2 + (Math.random() * 1);
+        var curR = r + (Math.random() * 300);
+        cur.css({
+          transformOrigin: "0 0 " + curR + "px",
+          transform: " translate3d(0,0,-" + curR + "px) rotateY(" + (Math.random() *
+            360) + "deg) rotateX(" + (Math.random() * -50) + "deg) scale(" + s + "," +
+            s + ")"
+        })
+      })
+    },
+    getVerifyCode() {
+      this.postRequest('/valiCode', '').then(resp => {
+        this.verifyCodeImgSrc = 'data:image/png;base64,' + resp.data;
+      });
+    },
     submitForm() {
       this.postRequest('/pubKey', '').then(resp => {
         var rsaPass = this.$getRsaCode(this.formLabelAlign.pass, resp.data); // ras 加密 密码 
         let params = {
-            name: this.formLabelAlign.name,
-            pass: rsaPass,
-            type: this.formLabelAlign.type
+          name: this.formLabelAlign.name,
+          pass: rsaPass,
+          type: this.formLabelAlign.type,
+          verifyCode: this.formLabelAlign.verifyCode
         };
         this.postRequest('/login', params).then(resp => {
           if (resp.code == 200) {
@@ -94,8 +114,7 @@ export default {
       console.log('resetForm!');
     },
     send_code() {
-      console.log('send_code!');
-      this.$message.error('错了哦，这是一条错误消息');
+      this.getVerifyCode();
     }
   }
 };
@@ -209,9 +228,111 @@ export default {
   line-height: 40px;
   height: 40px !important;
 }
+
+.verifyCodeImg {
+  height: 40px;
+  position: absolute;
+  right: 0px;
+  top: 0;
+  border-radius: 4px;
+  cursor: pointer;
+}
 </style>
 <style>
 .login-wrap .w .login-form .login-space .el-form .el-form-item > label {
   padding: 0;
+}
+
+.bodyArea {
+  height: 100%;
+  background: radial-gradient(
+    200% 100% at bottom center,
+    #f7f7b6,
+    #e96f92,
+    #75517d,
+    #1b2947
+  );
+  background: radial-gradient(
+    220% 105% at top center,
+    #1b2947 10%,
+    #75517d 40%,
+    #e96f92 65%,
+    #f7f7b6
+  );
+  background-attachment: fixed;
+  overflow: hidden;
+}
+
+.stars {
+  transform: perspective(500px);
+  transform-style: preserve-3d;
+  position: absolute;
+  bottom: 0;
+  perspective-origin: 50% 100%;
+  left: 50%;
+  animation: rotate 90s infinite linear;
+}
+
+.star {
+  width: 2px;
+  height: 2px;
+  background: #f7f7b6;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0 -300px;
+  transform: translate3d(0, 0, -300px);
+  backface-visibility: hidden;
+}
+.table {
+  width: 300px;
+  height: 350px;
+  margin: 80px auto;
+}
+.table form {
+  width: 100%;
+}
+.table .name {
+  width: 280px;
+  margin: 20px auto 30px auto;
+  display: block;
+  height: 30px;
+  border-radius: 20px;
+  border: none;
+  background: rgba(0, 0, 0, 0.2);
+  text-indent: 0.5em;
+}
+.table .btn {
+  width: 100px;
+  height: 30px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  border: none;
+  color: white;
+  margin: 0 auto;
+  display: block;
+}
+@keyframes rotate {
+  0% {
+    transform: perspective(400px) rotateZ(20deg) rotateX(-40deg) rotateY(0);
+  }
+  100% {
+    transform: perspective(400px) rotateZ(20deg) rotateX(-40deg)
+      rotateY(-360deg);
+  }
+}
+
+.login-space .el-form-item__label {
+  color: #fff;
+}
+
+.verifyCodeArea .el-form-item__content {
+  display: flex;
+  flex-direction: row;
+  /* justify-content: space-between; */
+  align-items: center;
+}
+.verifyCodeArea .el-form-item__content .el-input {
+  width: 180px;
 }
 </style>

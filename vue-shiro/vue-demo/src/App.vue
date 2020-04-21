@@ -15,10 +15,18 @@ export default {
   margin: 0;
   padding: 0;
 }
+html{
+  overflow: hidden;
+  height: 100%;
+}
+body{
+  height: 100%;
+}
 a{
   text-decoration:none;
 }
 #app{
+  height: 100%;
   /* filter: grayscale(100%); */
 }
 </style>
