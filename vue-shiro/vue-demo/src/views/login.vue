@@ -8,7 +8,7 @@
         <div class="login-form">
           <div class="login-space">
             <el-form @submit.native.prevent :label-position="labelPosition" label-width="80px"
-              :model="formLabelAlign" :rules="rules" hide-required-asterisk="true">
+              :model="formLabelAlign" :rules="rules" :hide-required-asterisk="true">
               <el-form-item label="用户名" prop="name">
                 <el-input prefix-icon="el-icon-user" v-model="formLabelAlign.name" clearable autocomplete="off">
                 </el-input>
@@ -244,6 +244,7 @@ export default {
 }
 
 .bodyArea {
+  width:100%;
   height: 100%;
   background: radial-gradient(
     200% 100% at bottom center,
@@ -261,6 +262,7 @@ export default {
   );
   background-attachment: fixed;
   overflow: hidden;
+  position: relative;
 }
 
 .stars {
@@ -287,7 +289,8 @@ export default {
 .table {
   width: 300px;
   height: 350px;
-  margin: 80px auto;
+  margin: 0px auto;
+  padding: 80px 0;
 }
 .table form {
   width: 100%;

@@ -16,7 +16,7 @@ export default {
   padding: 0;
 }
 html{
-  overflow: hidden;
+  /* overflow: hidden; */
   height: 100%;
 }
 body{
