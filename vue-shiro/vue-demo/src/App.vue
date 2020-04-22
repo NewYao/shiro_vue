@@ -29,9 +29,12 @@ a{
   height: 100%;
   /* filter: grayscale(100%); */
 }
-.el-select,.form_input ,.el-button  ,.el-date-editor{
+.el-header .el-select,.form_input ,.el-button  ,.el-date-editor{
     margin: 5px 5px 0px 0;
     margin-left: 0!important;
+}
+.el-header .el-select{
+  width: 150px;
 }
 table .el-button--mini {
     padding: 3px 4px;

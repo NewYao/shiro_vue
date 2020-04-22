@@ -328,7 +328,7 @@ export default {
 .el-header {
     /* height: 60px; */
     height: unset !important;
-    min-height: 60px;
+    min-height: 40px;
     padding: 0;
 }
 
