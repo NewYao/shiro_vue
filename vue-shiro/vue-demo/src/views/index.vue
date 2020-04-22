@@ -52,9 +52,9 @@
                 <el-submenu index="4">
                     <template slot="title">
                         <i class="el-icon-setting"></i>
-                        <span slot="title">导航四</span>
+                        <span slot="title">系统</span>
                     </template>
-                    <el-menu-item index="4-1">选项1</el-menu-item>
+                    <el-menu-item index="/sys/timeline">时间线</el-menu-item>
                     <el-menu-item index="4-2">选项2</el-menu-item>
                     <el-menu-item-group>
                         <template slot="title">分组6</template>
@@ -75,7 +75,9 @@
             <router-view class="homeRouterView"></router-view>
         </el-main>
     </el-container>
+     <el-backtop target=".page-component__scroll .el-scrollbar__wrap"></el-backtop>
 </el-container>
+
 </template>
 
 <script>

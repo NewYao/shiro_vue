@@ -4,6 +4,7 @@ import index from '@/views/index'
 import Unknown from '@/views/404'
 import per_base from '@/views/personnel/base'
 import welcome from '@/views/welcome'
+import timeline from '@/views/sys/timeline'
 Vue.use(Router)
 
 export default new Router({
@@ -27,6 +28,10 @@ export default new Router({
           name:'人员列表',
           path:'/per/base',
           component: per_base
+        },{
+          name:'时间线',
+          path:'/sys/timeline',
+          component :timeline
         },
         {
           name:'404',
