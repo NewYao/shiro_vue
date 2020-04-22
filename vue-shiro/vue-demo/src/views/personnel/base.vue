@@ -8,10 +8,12 @@
             <el-option v-for="item in states" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
         </el-select>
-        <el-date-picker style="margin-left:5px;" value-format="yyyy-MM-dd" size="mini" v-model="searchData.beginDateScope" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
+        <el-date-picker value-format="yyyy-MM-dd" size="mini" v-model="searchData.beginDateScope" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
         </el-date-picker>
+
         <el-button @click="testClick" size="mini" type="primary">查询</el-button>
         <el-button @click="openWindows" size="mini" type="success">新增用户</el-button>
+
     </el-header>
     <el-main>
         <el-table v-loading="loading" element-loading-text="拼命加载中" :stripe="true" :highlight-current-row="true" size="small" :data="tableData" border style="width: 100%" @selection-change="handleSelectionChange">
@@ -20,13 +22,13 @@
             </el-table-column>
             <el-table-column prop="fullname" label="姓名" fixed align="center">
             </el-table-column>
-            <el-table-column prop="username" label="登录名" align="center">
+            <el-table-column prop="username" label="登录名" min-width="100" align="center">
             </el-table-column>
-            <el-table-column prop="password" label="密码" align="center">
+            <!-- <el-table-column prop="password" label="密码" align="center">
+            </el-table-column> -->
+            <el-table-column prop="email" label="邮箱" min-width="150" align="center">
             </el-table-column>
-            <el-table-column prop="email" label="邮箱" align="center">
-            </el-table-column>
-            <el-table-column prop="phone" label="电话" align="center">
+            <el-table-column prop="phone" label="电话" min-width="120" align="center">
             </el-table-column>
             <el-table-column prop="createtime" label="注册日期" width="150" align="center">
             </el-table-column>
@@ -36,7 +38,7 @@
                     <span v-else style='color:#909399'>禁用</span>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" width="200" align="center">
+            <el-table-column label="操作" width="200" align="center" fixed="right">
                 <template slot-scope="scope">
                     <el-button @click="handleClick(scope.row,1)" type="primary" :loading="false" size="mini">查看</el-button>
                     <el-button v-if="scope.row.state == 1" @click="handleClick(scope.row,4)" type="info" size="mini">禁用</el-button>
@@ -296,6 +298,8 @@ export default {
             var search_data = Object.assign({}, this.searchData);
             search_data.page = this.currentPage;
             search_data.size = this.pageSize;
+            search_data.dateScope = this.searchData.beginDateScope ? (this.searchData.beginDateScope[0] + ',' + this.searchData.beginDateScope[1]) : '';
+            console.log(this.searchData.beginDateScope)
             this.postRequest('/user/base/', search_data).then(resp => {
                 var _this = this;
                 if (resp.code == 200) {
@@ -313,33 +317,26 @@ export default {
 </script>
 
 <style scoped>
+.el-main {
+    padding: 5px 20px 5px 0;
+}
+
 .el-pagination {
     margin-top: 10px;
 }
 
-.el-main {
-    padding: 0 20px 0 0;
-}
-
 .el-header {
     /* height: 60px; */
-    padding: 0px;
-    display: flex;
-    justify-content: left;
-    align-items: center;
+    height: unset !important;
+    min-height: 60px;
+    padding: 0;
 }
 
 .el-header .form_input {
     width: 150px;
-    margin-right: 5px;
 }
 
-.el-header .el-button {
-    margin-left: 5px;
-}
-
-table .el-button--mini {
-    padding: 3px 4px;
-    margin: 2px;
+.el-header .el-button--mini {
+    vertical-align: top;
 }
 </style>

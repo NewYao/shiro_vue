@@ -3,7 +3,7 @@
     <el-header>
         <router-link to="/"><span class="header_left">小旭旭的夏日</span></router-link>
         <div class="header_right">
-            <el-dropdown @command="handleCommand">
+            <el-dropdown @command="handleCommand" trigger="click">
                 <span class="el-dropdown-link">
                     <i class="el-icon-arrow-down el-icon-user"></i>
                 </span>

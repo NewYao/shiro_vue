@@ -25,8 +25,8 @@ public class UserController {
     @PostMapping("/")
     @RequiresUser
     public ReturnJson getUserList(@RequestParam(defaultValue = "1") Integer page,
-            @RequestParam(defaultValue = "10") Integer size, User user,String[] beginDateScope) {
-        JSONObject userList = userService.getUserList(page, size, user,beginDateScope);
+            @RequestParam(defaultValue = "10") Integer size, User user,String[] dateScope) {
+        JSONObject userList = userService.getUserList(page, size, user,dateScope);
         return new ReturnJson().ok().data(userList);
     }
     @PostMapping("/delete")
