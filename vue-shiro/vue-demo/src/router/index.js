@@ -5,6 +5,7 @@ import Unknown from '@/views/404'
 import per_base from '@/views/personnel/base'
 import welcome from '@/views/welcome'
 import timeline from '@/views/sys/timeline'
+import uploadFile from  '@/views/sys/uploadFile'
 Vue.use(Router)
 
 export default new Router({
@@ -32,6 +33,10 @@ export default new Router({
           name:'时间线',
           path:'/sys/timeline',
           component :timeline
+        },{
+          name:'上传文件',
+          path:'/sys/uploadFile',
+          component :uploadFile
         },
         {
           name:'404',

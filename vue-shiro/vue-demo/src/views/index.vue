@@ -55,7 +55,7 @@
                         <span slot="title">系统</span>
                     </template>
                     <el-menu-item index="/sys/timeline">时间线</el-menu-item>
-                    <el-menu-item index="4-2">选项2</el-menu-item>
+                    <el-menu-item index="/sys/uploadFile">文件上传</el-menu-item>
                     <el-menu-item-group>
                         <template slot="title">分组6</template>
                         <el-menu-item index="1-7">选项1</el-menu-item>
