@@ -1,8 +1,6 @@
 package cn.jnx.controller;
 
-import java.io.Serializable;
 
-import javax.validation.constraints.NotNull;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -115,4 +113,11 @@ public class ShiroController {
         cache.put(ele);// 存放ehcache缓存中
         return new ReturnJson().ok().data(v.getBase64Str());
     }
+    
+    
+    
+    
+    
+    
+    
 }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 
 import cn.jnx.model.MultipartFileParam;
 import cn.jnx.model.ReturnJson;
@@ -48,6 +49,11 @@ public class UploadController {
             System.out.println("文件上传失败。{}"+param.toString());
         }
         System.out.println("上传文件结束");
+        return new ReturnJson().ok();
+    }
+    
+    
+    public ReturnJson uploadFile(MultipartFile[] file) {
         return new ReturnJson().ok();
     }
 }
