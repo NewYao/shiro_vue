@@ -6,6 +6,7 @@ import per_base from '@/views/personnel/base'
 import welcome from '@/views/welcome'
 import timeline from '@/views/sys/timeline'
 import uploadFile from  '@/views/sys/uploadFile'
+import chat from '@/views/chat/chat'
 Vue.use(Router)
 
 export default new Router({
@@ -37,6 +38,10 @@ export default new Router({
           name:'上传文件',
           path:'/sys/uploadFile',
           component :uploadFile
+        },{
+          name:'聊天',
+          path:'/chat/chat',
+          component :chat
         },
         {
           name:'404',

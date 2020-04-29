@@ -12,8 +12,9 @@ axios.defaults.withCredentials = true
 
 // Set config defaults when creating the instance
 
-let base = 'http://192.168.0.69';
+//let base = 'http://192.168.0.69';
 // let base = '';
+let base = '/api';
 
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
