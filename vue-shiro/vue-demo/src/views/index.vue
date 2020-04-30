@@ -75,7 +75,7 @@
             <router-view class="homeRouterView"></router-view>
         </el-main>
     </el-container>
-     <el-backtop target=".page-component__scroll .el-scrollbar__wrap"></el-backtop>
+     <el-backtop target=".el-container"></el-backtop>
 </el-container>
 
 </template>
