@@ -3,7 +3,6 @@ package cn.jnx.common.Exception;
 import javax.crypto.BadPaddingException;
 
 import org.apache.shiro.ShiroException;
-import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
