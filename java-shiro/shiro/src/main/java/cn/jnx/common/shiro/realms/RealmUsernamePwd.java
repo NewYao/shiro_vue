@@ -44,7 +44,7 @@ public class RealmUsernamePwd extends ParentRealm {
         // 获取用户角色
         Set<String> roles = new HashSet<String>();
         roles.add("user");
-        if("admin1".equals(username)) {
+        if("admin".equals(username)) {
             roles.add("admin");
         }
         // 获取用户权限

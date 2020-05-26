@@ -40,13 +40,11 @@ public class ShiroConfig {
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
         // 配置不会被拦截的链接 顺序判断
         filterChainDefinitionMap.put("/static/**", "anon");
-        filterChainDefinitionMap.put("/login", "anon");
-        filterChainDefinitionMap.put("/pubKey", "anon");
-        filterChainDefinitionMap.put("/valiCode", "anon");
+        filterChainDefinitionMap.put("/pub/**", "anon");
         filterChainDefinitionMap.put("/websocket/**", "anon");
         filterChainDefinitionMap.put("/", "anon");
         // 配置退出 过滤器，其中具体的退出代码Shiro已经替我们实现了
-        filterChainDefinitionMap.put("/logout", "anon");
+//        filterChainDefinitionMap.put("/logout", "anon");
         // 过滤链定义，从上向下顺序执行，一般将'/**'放在最为下边 因为保存在LinkedHashMap中，顺序很重要
         // <!-- authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问-->
         filterChainDefinitionMap.put("/**", "authc");// 设置/** 为user后，记住我才会生效
@@ -54,11 +52,11 @@ public class ShiroConfig {
         // --------------------------------------------------
         // 前后端分离使用下面设置
         // shiroFilterFactoryBean.setLoginUrl("/login.html");
-        shiroFilterFactoryBean.setLoginUrl("/unLogin");
+        shiroFilterFactoryBean.setLoginUrl("/pub/unLogin");
         // ---------------------------------------------------
         // 登录成功后跳转的链接,前后端分离不用设置
         // shiroFilterFactoryBean.setSuccessUrl("/index");
-        
+
         // 未授权的界面
         shiroFilterFactoryBean.setUnauthorizedUrl("/unauthorized");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
@@ -138,7 +136,6 @@ public class ShiroConfig {
         return simpleCookie;
     }
 
-
     /**
      * 配置保存sessionId的cookie 注意：这里的cookie 不是上面的记住我 cookie 记住我需要一个cookie session管理
      * 也需要自己的cookie 默认为: JSESSIONID 问题: 与SERVLET容器名冲突,重新定义
@@ -150,7 +147,7 @@ public class ShiroConfig {
         // 这个参数是cookie的名称
         SimpleCookie simpleCookie = new SimpleCookie("shiro-vue");
         // setcookie的httponly属性如果设为true的话，会增加对xss防护的安全系数。它有以下特点：
-        
+
         // setcookie()的第七个参数
         // 设为true后，只能通过http访问，javascript无法访问
         // 防止xss读取cookie

@@ -5,8 +5,9 @@ import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SaltedAuthenticationInfo;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
-import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
+
+import cn.jnx.util.tools.GlobalTools;
 
 public class MyCredentialsMatcher extends HashedCredentialsMatcher {
     /**
@@ -23,7 +24,7 @@ public class MyCredentialsMatcher extends HashedCredentialsMatcher {
         String dbPassword = (String) info.getCredentials();// 数据库查询得到的加密后的密码
         ByteSource salt = ((SaltedAuthenticationInfo) info).getCredentialsSalt();//获取盐
         // 对用户输入密码进行加密(加密方式,用户输入密码,盐值（用户名）,加密次数)
-        String encryptionPwd = new SimpleHash("MD5", inputPwd, salt, 1024).toString();// 加密后的密码
+        String encryptionPwd = GlobalTools.md5SimpleHash(inputPwd, salt.toString());
         return equals(encryptionPwd, dbPassword);
     }
 }

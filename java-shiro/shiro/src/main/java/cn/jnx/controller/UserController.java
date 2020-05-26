@@ -21,7 +21,6 @@ public class UserController {
     private UserService userService;
     
     @PostMapping("/")
-    @RequiresUser
     public ReturnJson getUserList(@RequestParam(defaultValue = "1") Integer page,
             @RequestParam(defaultValue = "10") Integer size, User user,String[] dateScope) {
         JSONObject userList = userService.getUserList(page, size, user,dateScope);
