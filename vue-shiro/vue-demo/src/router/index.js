@@ -7,6 +7,8 @@ import welcome from '@/views/welcome'
 import timeline from '@/views/sys/timeline'
 import uploadFile from  '@/views/sys/uploadFile'
 import chat from '@/views/chat/chat'
+import authAndRole from '@/views/authAndRole/authAndRole'
+
 Vue.use(Router)
 
 export default new Router({
@@ -30,6 +32,10 @@ export default new Router({
           name:'人员列表',
           path:'/per/base',
           component: per_base
+        },{
+          name:'角色权限分配',
+          path:'/authAndRole/authAndRole',
+          component :authAndRole
         },{
           name:'时间线',
           path:'/sys/timeline',

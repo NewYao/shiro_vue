@@ -32,11 +32,10 @@
 export default {
    data() {
         return {
-            isLogin:true,
             labelPosition: 'top',
             formLabelAlign: {
                 name: 'guest',
-                pass: '111111',
+                pass: '123123',
                 type: '',
                 verifyCode: ''
             },
@@ -85,12 +84,12 @@ export default {
     },
     methods: {
         getVerifyCode() {
-            this.postRequest('/valiCode', '').then(resp => {
+            this.postRequest('/pub/valiCode', '').then(resp => {
                 this.verifyCodeImgSrc = 'data:image/png;base64,' + resp.data;
             });
         },
         submitForm() {
-            this.postRequest('/pubKey', '').then(resp => {
+            this.postRequest('/pub/pubKey', '').then(resp => {
                 var rsaPass = this.$getRsaCode(this.formLabelAlign.pass, resp.data); // ras 加密 密码 
                 let params = {
                     name: this.formLabelAlign.name,
@@ -98,7 +97,7 @@ export default {
                     type: this.formLabelAlign.type,
                     verifyCode: this.formLabelAlign.verifyCode
                 };
-                this.postRequest('/login', params).then(resp => {
+                this.postRequest('/pub/login', params).then(resp => {
                     if (resp.code == 200) {
                         var _this = this;
                         this.$message.success('登陆成功！正在跳转。。。');
@@ -110,7 +109,7 @@ export default {
             });
         },
         resetForm() {
-            this.isLogin = !this.isLogin;
+            this.$parent.changeComp();
         },
         send_code() {
             this.getVerifyCode();

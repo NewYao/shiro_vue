@@ -6,21 +6,24 @@
             <img src="../../static/panda.svg" />
             <embed src="../../static/panda_re.svg" />
         </div>
-        <logincomp></logincomp>
+        <logincomp v-if="isLogin"></logincomp>
+        <registercomp v-else></registercomp>
     </div>
 </div>
 </template>
 
 <script>
 import logincomp from "../components/login/login_comp.vue"
+import registercomp from "../components/login/register_comp.vue"
 export default {
     data() {
         return {
-
+            isLogin: true,
         };
     },
     components: {
-        logincomp
+        logincomp,
+        registercomp
     },
     mounted() {
         this.initStars();
@@ -49,6 +52,9 @@ export default {
                 })
             })
         },
+        changeComp(){
+            this.isLogin = !this.isLogin;
+        }
     },
 
 };
@@ -75,8 +81,7 @@ export default {
     margin: 0;
     height: 100px;
 }
-</style>
-<style>
+</style><style>
 .bodyArea {
     height: 100%;
     background: radial-gradient(200% 100% at bottom center,
@@ -115,8 +120,6 @@ export default {
     transform: translate3d(0, 0, -300px);
     backface-visibility: hidden;
 }
-
-
 
 @keyframes rotate {
     0% {
