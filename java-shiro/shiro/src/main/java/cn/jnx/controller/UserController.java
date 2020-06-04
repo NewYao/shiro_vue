@@ -1,7 +1,6 @@
 package cn.jnx.controller;
 
-import org.apache.shiro.authz.annotation.RequiresRoles;
-import org.apache.shiro.authz.annotation.RequiresUser;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,13 +20,14 @@ public class UserController {
     private UserService userService;
     
     @PostMapping("/")
+    @RequiresPermissions(value= {"user:select"})
     public ReturnJson getUserList(@RequestParam(defaultValue = "1") Integer page,
             @RequestParam(defaultValue = "10") Integer size, User user,String[] dateScope) {
         JSONObject userList = userService.getUserList(page, size, user,dateScope);
         return new ReturnJson().ok().data(userList);
     }
     @PostMapping("/delete")
-    @RequiresRoles("admin")
+    @RequiresPermissions(value= {"user:delete"})
     public ReturnJson deleteUserById( Integer id) {
         if(userService.deleteUserById(id) == 1) {
             return new ReturnJson().ok().message("删除成功！");
@@ -36,7 +36,7 @@ public class UserController {
     }
     
     @PostMapping("/update")
-    @RequiresRoles("user")
+    @RequiresPermissions(value= {"user:modify"})
     public ReturnJson updateUserInfo(User user) {
         if(userService.updateUser(user) == 1) {
             return new ReturnJson().ok().message("更改成功！");
@@ -45,7 +45,7 @@ public class UserController {
     }
     
     @PostMapping("/add")
-    @RequiresRoles("admin")
+    @RequiresPermissions(value= {"user:add"})
     public ReturnJson addUser(User user) {
         if(userService.addUser(user) == 1) {
             return new ReturnJson().ok().message("新增成功！");
@@ -55,6 +55,7 @@ public class UserController {
     
     
     @PostMapping("/queryByDate")
+    @RequiresPermissions(value= {"user:select"})
     public ReturnJson queryByDate(String[] date) {
         return new ReturnJson().ok().data(userService.queryByDate(date));
     }
