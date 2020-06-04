@@ -3,6 +3,7 @@ package cn.jnx.service;
 import com.alibaba.fastjson.JSONObject;
 
 import cn.jnx.model.User;
+import cn.jnx.model.dto.User_dto;
 
 public interface UserService {
 
@@ -12,7 +13,7 @@ public interface UserService {
 
     public int updateUser(User user);
     
-    public User selectByUserName(String username);
+    public User_dto selectByUserName(String username);
     
     public User selectByPhone(String phone);
 

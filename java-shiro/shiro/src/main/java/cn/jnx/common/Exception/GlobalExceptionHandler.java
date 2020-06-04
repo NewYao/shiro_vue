@@ -71,6 +71,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public ReturnJson handleException(Exception e) {
         System.out.println("系统错误：" + e.getStackTrace());
+        e.printStackTrace();
         return new ReturnJson().error().message("系统错误，请稍后重试！");
     }
 }

@@ -14,6 +14,7 @@ import com.github.pagehelper.PageInfo;
 import cn.jnx.mapper.UserMapper;
 import cn.jnx.model.PageUtil;
 import cn.jnx.model.User;
+import cn.jnx.model.dto.User_dto;
 import cn.jnx.service.UserService;
 
 @Service
@@ -43,7 +44,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User selectByUserName(String username) {
+    public User_dto selectByUserName(String username) {
         return userMapper.selectByUserName(username);
     }
 

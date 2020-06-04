@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
 import cn.jnx.model.User;
+import cn.jnx.model.dto.User_dto;
 
 public interface UserMapper {
     /**
@@ -27,7 +28,7 @@ public interface UserMapper {
 
     int updateByPrimaryKey(User record);
     
-    User selectByUserName(String username);
+    User_dto selectByUserName(String username);
     
     User selectByPhone(String phone);
 

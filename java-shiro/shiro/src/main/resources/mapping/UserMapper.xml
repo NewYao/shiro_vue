@@ -16,6 +16,29 @@
 			property="createtime" />
 		<result column="state" jdbcType="INTEGER" property="state" />
 	</resultMap>
+	<resultMap id="BaseResultMapWithRoles" type="cn.jnx.model.dto.User_dto">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="username" jdbcType="VARCHAR"
+			property="username" />
+		<result column="password" jdbcType="VARCHAR"
+			property="password" />
+		<result column="salt" jdbcType="VARCHAR" property="salt" />
+		<result column="fullname" jdbcType="VARCHAR"
+			property="fullname" />
+		<result column="email" jdbcType="VARCHAR" property="email" />
+		<result column="phone" jdbcType="VARCHAR" property="phone" />
+		<result column="createtime" jdbcType="TIMESTAMP"
+			property="createtime" />
+		<result column="state" jdbcType="INTEGER" property="state" />
+		<collection property="roles" column="id" select="queryRolesByUserId" ></collection>
+	</resultMap>
+	
+	<select id="queryRolesByUserId" parameterType="int" resultMap="cn.jnx.mapper.RoleMapper.BaseResultMap">
+	select * from role r where  
+	(select r_id from user_role u where u.u_id = #{id} and r.r_id  = u.r_id)
+	</select>
+	
+	
 	<sql id="Base_Column_List">
 		id, username, password, salt, fullname, email, phone, createtime, state
 	</sql>
@@ -178,7 +201,7 @@
 		</where>
 		order by u.id desc
 	</select>
-	<select id="selectByUserName" resultMap="BaseResultMap">
+	<select id="selectByUserName" resultMap="BaseResultMapWithRoles">
 		select
 		<include refid="Base_Column_List" />
 		from user u

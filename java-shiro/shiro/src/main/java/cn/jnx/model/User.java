@@ -2,102 +2,101 @@ package cn.jnx.model;
 
 import java.util.Date;
 
-
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class User {
-    private Integer id;
+	private Integer id;
 
-    private String username;
-    @JsonIgnore
-    private String password;
-    @JsonIgnore
-    private String salt;
-    
-    private String fullname;
+	private String username;
+	@JsonIgnore
+	private String password;
+	@JsonIgnore
+	private String salt;
 
-    private String email;
+	private String fullname;
 
-    private String phone;
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    @JsonFormat( pattern ="yyyy-MM-dd HH:mm:ss")
-    private Date createtime;
+	private String email;
 
-    private Integer state;
+	private String phone;
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private Date createtime;
 
-    public Integer getId() {
-        return id;
-    }
+	private Integer state;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	public Integer getId() {
+		return id;
+	}
 
-    public String getUsername() {
-        return username;
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    public void setUsername(String username) {
-        this.username = username == null ? null : username.trim();
-    }
+	public String getUsername() {
+		return username;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public void setUsername(String username) {
+		this.username = username == null ? null : username.trim();
+	}
 
-    public void setPassword(String password) {
-        this.password = password == null ? null : password.trim();
-    }
+	public String getPassword() {
+		return password;
+	}
 
-    public String getFullname() {
-        return fullname;
-    }
+	public void setPassword(String password) {
+		this.password = password == null ? null : password.trim();
+	}
 
-    public void setFullname(String fullname) {
-        this.fullname = fullname == null ? null : fullname.trim();
-    }
+	public String getFullname() {
+		return fullname;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public void setFullname(String fullname) {
+		this.fullname = fullname == null ? null : fullname.trim();
+	}
 
-    public void setEmail(String email) {
-        this.email = email == null ? null : email.trim();
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public String getPhone() {
-        return phone;
-    }
+	public void setEmail(String email) {
+		this.email = email == null ? null : email.trim();
+	}
 
-    public void setPhone(String phone) {
-        this.phone = phone == null ? null : phone.trim();
-    }
+	public String getPhone() {
+		return phone;
+	}
 
-    public Date getCreatetime() {
-        return createtime;
-    }
+	public void setPhone(String phone) {
+		this.phone = phone == null ? null : phone.trim();
+	}
 
-    public void setCreatetime(Date createtime) {
-        this.createtime = createtime;
-    }
+	public Date getCreatetime() {
+		return createtime;
+	}
 
-    public Integer getState() {
-        return state;
-    }
+	public void setCreatetime(Date createtime) {
+		this.createtime = createtime;
+	}
 
-    public void setState(Integer state) {
-        this.state = state;
-    }
+	public Integer getState() {
+		return state;
+	}
 
-    public String getSalt() {
-        return salt;
-    }
+	public void setState(Integer state) {
+		this.state = state;
+	}
 
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
-    
+	public String getSalt() {
+		return salt;
+	}
+
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
+
 }
