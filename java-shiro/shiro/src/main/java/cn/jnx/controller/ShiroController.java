@@ -50,11 +50,6 @@ public class ShiroController {
         return new ReturnJson().unLogin().message("登录态失效！请重新登录！");
     }
 
-    @RequestMapping("/")
-    public String a() {
-        System.out.println("进入首页");
-        return "/index.html";
-    }
 
     @PostMapping("/login")
     @ResponseBody
