@@ -17,7 +17,7 @@ public interface UserService {
     
     public User selectByPhone(String phone);
 
-    public int addUser(User user);
+    public boolean addUser(User user,Integer r_id);
 
     public Object queryByDate(String[] date);
 }

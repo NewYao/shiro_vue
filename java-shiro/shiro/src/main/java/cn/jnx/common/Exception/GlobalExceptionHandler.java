@@ -50,7 +50,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public ReturnJson handle403() {
         System.out.println("权限全局捕获器");
-        return new ReturnJson().invalid().message("您没有权限访问！");
+        return new ReturnJson().invalid().message("您无此权限！");
     }
 
     // 捕捉shiro的异常

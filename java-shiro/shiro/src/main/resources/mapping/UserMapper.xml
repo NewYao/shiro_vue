@@ -54,7 +54,7 @@
 		delete from user
 		where id = #{id,jdbcType=INTEGER}
 	</delete>
-	<insert id="insert" parameterType="cn.jnx.model.User">
+	<insert id="insert" parameterType="cn.jnx.model.User" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
 		insert into user (id, username, password, salt,
 		fullname, email, phone,
 		createtime, state)
@@ -64,7 +64,7 @@
 		#{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
 		#{createtime,jdbcType=TIMESTAMP}, #{state,jdbcType=INTEGER})
 	</insert>
-	<insert id="insertSelective" parameterType="cn.jnx.model.User">
+	<insert id="insertSelective" parameterType="cn.jnx.model.User" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
 		insert into user
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="id != null">

@@ -134,11 +134,10 @@ public class ShiroController {
         String encryptionPwd = GlobalTools.md5SimpleHash(inputPwd, ByteSource.Util.bytes(salt).toString());
         user.setSalt(salt);
         user.setPassword(encryptionPwd);
-        int i = userService.addUser(user);
-        if (i <= 0) {
-            return new ReturnJson().fail().message("注册失败！");
+        if(userService.addUser(user,1)) {
+        	return new ReturnJson().ok();
         }
-        return new ReturnJson().ok();
+        return new ReturnJson().fail().message("注册失败！");
     }
 
 }

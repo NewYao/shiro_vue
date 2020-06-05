@@ -7,11 +7,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @MapperScan("cn.jnx.mapper")
 @EnableAutoConfiguration
 @EnableScheduling // 启动定时函数,刷新秘钥策略
 @SpringBootApplication
+@EnableTransactionManagement//开启事物
 public class ShiroApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
