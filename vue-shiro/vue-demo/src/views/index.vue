@@ -193,7 +193,7 @@ export default {
             } else if (command == '2') {
 
             } else if (command == '3') {
-                _this.postRequest("/logout", '').then(resp => {
+                _this.postRequest("/pub/logout", '').then(resp => {
                     if (resp.code == 200) {
                         setTimeout(function () {
                             _this.$router.replace('/');

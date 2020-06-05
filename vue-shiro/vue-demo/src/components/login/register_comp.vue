@@ -41,7 +41,6 @@
 export default {
     data() {
         return {
-            isLogin: true,
             labelPosition: 'left',
             formLabelAlign: {
                 username: '',
@@ -88,7 +87,8 @@ export default {
                         var _this = this;
                         this.$message.success('注册成功！');
                         setTimeout(function () {
-                             this.$parent.changeComp();
+                            var that = _this;
+                             that.$parent.changeComp();
                         }, 1500);
                     }
                 })
