@@ -1,11 +1,9 @@
 <template>
   <div>
-    <span>我的ID：</span>
-    <input v-model="userid" placeholder="目标用户id" />
-    <button @click="initSocket">建立websocket连接</button>
     <div>
       <span>发送给：</span>
       <input v-model="toUserId" placeholder="目标用户id" />
+      <button @click="initSocket">建立websocket连接</button>
     </div>
     <div class="chatMainArea">
       <div class="toSendUser">{{toUserId}}</div>
@@ -26,9 +24,9 @@ export default {
   data() {
     return {
       webSocket: null,
-      url: '192.168.0.69',
+      url: '127.0.0.1',
       types: 'websocket',
-      userid: '',
+      userid: this.$store.getters.getloginUser.id,
       toUserId: '',
       contentText: '',
       receiveMsg: ''
