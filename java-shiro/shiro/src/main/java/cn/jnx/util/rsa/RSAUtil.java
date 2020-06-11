@@ -85,7 +85,12 @@ public class RSAUtil {
 	}
 	
 	
-	//解密密文
+	/**
+	 * 解密密文
+	 * @param ciphertext
+	 * @return
+	 * @throws Exception
+	 */
     public static String getTrueStr(String ciphertext) throws Exception {
         // 将Base64编码后的私钥转换成PrivateKey对象
         PrivateKey privateKey = RSAUtil.string2PrivateKey(KeyManager.getPrivate_key());

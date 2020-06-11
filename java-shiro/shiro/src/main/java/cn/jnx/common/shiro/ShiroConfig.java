@@ -51,8 +51,8 @@ public class ShiroConfig {
         // 如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面,前后端分离设置此为controller返回的未登录的接口
         // --------------------------------------------------
         // 前后端分离使用下面设置
-        // shiroFilterFactoryBean.setLoginUrl("/login.html");
-        shiroFilterFactoryBean.setLoginUrl("/pub/unLogin");
+         shiroFilterFactoryBean.setLoginUrl("/login.html");
+//        shiroFilterFactoryBean.setLoginUrl("/pub/unLogin");
         // ---------------------------------------------------
         // 登录成功后跳转的链接,前后端分离不用设置
         // shiroFilterFactoryBean.setSuccessUrl("/index");

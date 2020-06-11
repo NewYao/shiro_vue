@@ -1,5 +1,9 @@
 package cn.jnx.mapper;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import cn.jnx.model.Edition_detail;
 
 public interface Edition_detailMapper {
@@ -14,4 +18,8 @@ public interface Edition_detailMapper {
     int updateByPrimaryKeySelective(Edition_detail record);
 
     int updateByPrimaryKey(Edition_detail record);
+    
+    int insertList(@Param("records")List<Edition_detail> records);
+
+	int deleteByEditionId(int edition_id);
 }

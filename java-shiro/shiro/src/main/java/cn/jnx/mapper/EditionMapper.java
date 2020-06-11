@@ -3,6 +3,7 @@ package cn.jnx.mapper;
 import java.util.List;
 
 import cn.jnx.model.Edition;
+import cn.jnx.model.dto.Edition_dto;
 
 public interface EditionMapper {
     int deleteByPrimaryKey(Integer id);
@@ -11,7 +12,7 @@ public interface EditionMapper {
 
     int insertSelective(Edition record);
 
-    Edition selectByPrimaryKey(Integer id);
+    Edition_dto selectByPrimaryKey(Integer id);
 
     int updateByPrimaryKeySelective(Edition record);
 

@@ -41,21 +41,16 @@
 <!--             列名去除前缀 -->
 <!-- 			<columnRenamingRule searchString="^[^_]+" replaceString="" /> -->
         </table>
-        <table schema="shiro" tableName="permission" domainObjectName="Permission" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+     
+        <table schema="shiro" tableName="edition" domainObjectName="Edition" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
             <!--table标签下的设置属性useActualColumnNames用于指定生成实体类时是否使用实际的列名作为实体类的属性名，取值true或false。 -->
             <property name="useActualColumnNames" value="true" />
         </table>
-		<table schema="shiro" tableName="role" domainObjectName="Role" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+        <table schema="shiro" tableName="edition_detail" domainObjectName="Edition_detail" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
             <!--table标签下的设置属性useActualColumnNames用于指定生成实体类时是否使用实际的列名作为实体类的属性名，取值true或false。 -->
             <property name="useActualColumnNames" value="true" />
         </table>
-        <table schema="shiro" tableName="role_permission" domainObjectName="Role_permission" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
-            <!--table标签下的设置属性useActualColumnNames用于指定生成实体类时是否使用实际的列名作为实体类的属性名，取值true或false。 -->
-            <property name="useActualColumnNames" value="true" />
-        </table>
-        <table schema="shiro" tableName="user_role" domainObjectName="User_role" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
-            <!--table标签下的设置属性useActualColumnNames用于指定生成实体类时是否使用实际的列名作为实体类的属性名，取值true或false。 -->
-            <property name="useActualColumnNames" value="true" />
-        </table>
+        
+        
     </context>
 </generatorConfiguration>

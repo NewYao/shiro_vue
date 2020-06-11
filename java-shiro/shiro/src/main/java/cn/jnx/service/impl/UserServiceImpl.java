@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,7 @@ import cn.jnx.model.User;
 import cn.jnx.model.User_role;
 import cn.jnx.model.dto.User_dto;
 import cn.jnx.service.UserService;
+import cn.jnx.util.tools.GlobalTools;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -101,5 +103,23 @@ public class UserServiceImpl implements UserService {
 		}
 		int count = (int) ((endDate.getTime() - startDate.getTime()) / (24 * 60 * 60 * 1000));
 		return count;
+	}
+
+
+	@Override
+	public ReturnJson modifyPwd(Integer id, String oldpwd, String newPwd) {
+		User user = userMapper.selectByPrimaryKey(id);
+		//对比旧密码
+		String encryptionOldPwd = GlobalTools.md5SimpleHash(oldpwd, ByteSource.Util.bytes(user.getSalt()).toString());
+		if(!encryptionOldPwd.equals(user.getPassword())){
+			return new ReturnJson().fail().message("原始密码输入错误！");
+		}
+		String encryptionNewPwd = GlobalTools.md5SimpleHash(newPwd, ByteSource.Util.bytes(user.getSalt()).toString());
+		user.setPassword(encryptionNewPwd);
+		int refectRows = userMapper.updateByPrimaryKey(user);
+		if(refectRows<=0) {
+			return new ReturnJson().fail().message("密码修改失败");
+		}
+		return new ReturnJson().ok();
 	}
 }

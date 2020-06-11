@@ -72,22 +72,21 @@ export default {
             });
         },
         submitForm() {
-            this.postRequest('/pub/pubKey', '').then(resp => {
-                var rsaPass = this.$getRsaCode(this.formLabelAlign.password, resp.data); // ras 加密 密码 
+            var that = this;
+            that.postRequest('/pub/pubKey', '').then(resp => {
+                var rsaPass = that.$getRsaCode(that.formLabelAlign.password, resp.data); // ras 加密 密码 
                 let params = {
-                    username: this.formLabelAlign.username,
-                    fullname: this.formLabelAlign.fullname,
+                    username: that.formLabelAlign.username,
+                    fullname: that.formLabelAlign.fullname,
                     password: rsaPass,
-                    email: this.formLabelAlign.email,
-                    phone: this.formLabelAlign.phone,
-                    verifyCode: this.formLabelAlign.verifyCode
+                    email: that.formLabelAlign.email,
+                    phone: that.formLabelAlign.phone,
+                    verifyCode: that.formLabelAlign.verifyCode
                 };
-                this.postRequest('/pub/register', params).then(resp => {
+                that.postRequest('/pub/register', params).then(resp => {
                     if (resp.code == 200) {
-                        var _this = this;
-                        this.$message.success('注册成功！');
+                        that.$message.success('注册成功！');
                         setTimeout(function () {
-                            var that = _this;
                              that.$parent.changeComp();
                         }, 1500);
                     }

@@ -1,6 +1,8 @@
 package cn.jnx.controller;
 
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
 
+import cn.jnx.common.Exception.CustomException;
 import cn.jnx.model.ReturnJson;
 import cn.jnx.model.User;
 import cn.jnx.service.UserService;
@@ -25,7 +28,6 @@ public class UserController {
 	private UserService userService;
 
 	@PostMapping("/")
-	@RequiresPermissions(value = { "user:select" })
 	public ReturnJson getUserList(@RequestParam(defaultValue = "1") Integer page,
 			@RequestParam(defaultValue = "10") Integer size, User user, String[] dateScope) {
 		JSONObject userList = userService.getUserList(page, size, user, dateScope);
@@ -33,6 +35,7 @@ public class UserController {
 	}
 
 	@PostMapping("/delete")
+	@RequiresRoles(value= {"admin","user"},logical=Logical.OR)
 	@RequiresPermissions(value = { "user:delete" })
 	public ReturnJson deleteUserById(Integer id) {
 		if (userService.deleteUserById(id) == 1) {
@@ -42,7 +45,7 @@ public class UserController {
 	}
 
 	@PostMapping("/update")
-	@RequiresPermissions(value = { "user:modify" })
+	@RequiresRoles(value= {"admin","user"},logical=Logical.OR)
 	public ReturnJson updateUserInfo(User user) {
 		if (userService.updateUser(user) == 1) {
 			return new ReturnJson().ok().message("更改成功！");
@@ -51,6 +54,7 @@ public class UserController {
 	}
 
 	@PostMapping("/add")
+	@RequiresRoles(value= {"admin","user"},logical=Logical.OR)
 	@RequiresPermissions(value = { "user:add" })
 	public ReturnJson addUser(User user, @RequestParam(defaultValue = "1") Integer r_id) throws Exception {
 		// 根据公钥，解密rsa的秘钥
@@ -68,9 +72,26 @@ public class UserController {
 	}
 
 	@PostMapping("/queryByDate")
-	@RequiresPermissions(value = { "user:select" })
 	public ReturnJson queryByDate(String[] date) {
 		return new ReturnJson().ok().data(userService.queryByDate(date));
+	}
+
+	@PostMapping("/modifyPwd")
+	@RequiresRoles(value= {"admin","user"},logical=Logical.OR)
+	public ReturnJson modifyPwd(Integer id, String oldPwd, String newPwd) {
+		if(id==6) {
+			return new ReturnJson().fail().message("别改我的默认账号!");
+		}
+		//解密使用rsa加密的密码
+		String _oldPwd = "";
+		String _newPwd = "";
+		try {
+			_oldPwd = RSAUtil.getTrueStr(oldPwd);
+			_newPwd = RSAUtil.getTrueStr(newPwd);
+		} catch (Exception e) {
+			throw new CustomException("密文解析失败！");
+		}
+		return userService.modifyPwd(id, _oldPwd, _newPwd);
 	}
 
 }

@@ -3,13 +3,14 @@
     <el-header>
         <router-link to="/"><span class="header_left">小旭旭的夏日</span></router-link>
         <div class="header_right">
+            {{loginUser.fullname}}
             <el-dropdown @command="handleCommand" trigger="click">
                 <span class="el-dropdown-link">
                     <i class="el-icon-arrow-down el-icon-user"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item command="1">个人中心</el-dropdown-item>
-                    <el-dropdown-item command="2">设置</el-dropdown-item>
+                    <el-dropdown-item command="2">密码修改</el-dropdown-item>
                     <el-dropdown-item command="3" divided>注销</el-dropdown-item>
                 </el-dropdown-menu>
             </el-dropdown>
@@ -79,6 +80,20 @@
         </el-main>
     </el-container>
     <el-backtop target=".el-container"></el-backtop>
+    <el-dialog title="密码修改" @close="pwdFormVisible=false,resetForm('modifyPwd')"  :visible.sync="pwdFormVisible" :close-on-click-modal="false" >
+        <el-form :model="modifyPwd" ref="modifyPwd">
+            <el-form-item prop="oldPwd" label="请输入原始密码" :label-width="formLabelWidth">
+                <el-input type="password" maxlength="20" minlength="8" placeholder="6-20个字符" show-password v-model="modifyPwd.oldPwd" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item prop="newPwd" label="请输入新密码" :label-width="formLabelWidth">
+                <el-input type="password" maxlength="20" minlength="8" placeholder="6-20个字符" show-password v-model="modifyPwd.newPwd" autocomplete="off"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="pwdFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="modifyPwdMethod">确 定</el-button>
+        </div>
+    </el-dialog>
 </el-container>
 </template>
 
@@ -88,11 +103,23 @@ export default {
     data() {
         return {
             msg: "欢迎使用！",
-            isCollapse: false
+            isCollapse: false,
+            pwdFormVisible: false,
+            modifyPwd: {
+                oldPwd: '',
+                newPwd: ''
+            },
+            formLabelWidth: '120px'
         };
     },
     mounted() {
         this.mouseLine();
+        // document.onkeydown = null;
+    },
+    computed: {
+        loginUser() { //返回登录是放入vuex中的用户信息
+            return this.$store.getters.getloginUser;
+        }
     },
     methods: {
         //鼠标吸附线条
@@ -186,15 +213,15 @@ export default {
             this.isCollapse = !flag;
         },
         handleCommand(command) {
-            this.$message('click on item ' + command);
             var _this = this;
             if (command == '1') {
 
             } else if (command == '2') {
-
+                _this.pwdFormVisible = true;
             } else if (command == '3') {
                 _this.postRequest("/pub/logout", '').then(resp => {
                     if (resp.code == 200) {
+                        this.$store.commit("clearLogin"); //清理vuex登录信息
                         setTimeout(function () {
                             _this.$router.replace('/');
                         }, 500);
@@ -202,6 +229,34 @@ export default {
                 });
             }
 
+        },
+        modifyPwdMethod() {
+            var that = this;
+            that.postRequest('/pub/pubKey', '').then(resp => {
+                if (resp.code == 200) {
+                    var oldPwd = that.$getRsaCode(that.modifyPwd.oldPwd, resp.data); // ras 加密 密码 
+                    var newPwd = that.$getRsaCode(that.modifyPwd.newPwd, resp.data); // ras 加密 密码 
+                    let params = {
+                        oldPwd: oldPwd,
+                        id: that.$store.getters.getloginUser.id,
+                        newPwd: newPwd
+                    };
+                    that.postRequest("/user/base/modifyPwd", params).then(resp => {
+                        if (resp.code == 200) {
+                            // this.$store.commit("clearLogin");//清理vuex登录信息
+                            // setTimeout(function () {
+                            //     _this.$router.replace('/');
+                            // }, 500);
+                            that.$message.success('修改成功！');
+                            that.pwdFormVisible = false;
+                        }
+                    });
+                }
+            });
+
+        },
+        resetForm(formName) {
+            this.$refs[formName].resetFields();
         }
     }
 };

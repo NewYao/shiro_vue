@@ -1,36 +1,35 @@
 <template>
-
-  <div class="table">
-            <h2 style="color: white;">
-                <div class="login-form">
-                    <div class="login-space">
-                        <el-form @submit.native.prevent :label-position="labelPosition" label-width="80px" :model="formLabelAlign"  :hide-required-asterisk="true">
-                            <el-form-item label="用户名" prop="name">
-                                <el-input prefix-icon="el-icon-user" v-model="formLabelAlign.name" clearable autocomplete="off">
-                                </el-input>
-                            </el-form-item>
-                            <el-form-item label="密码" prop="pass">
-                                <el-input prefix-icon="el-icon-s-cooperation" type="password" show-password v-model="formLabelAlign.pass" autocomplete="off"></el-input>
-                            </el-form-item>
-                            <el-form-item label="验证码" class="verifyCodeArea" prop="verifyCode">
-                                <el-input type="text" maxlength="4" v-model="formLabelAlign.verifyCode" autocomplete="off">
-                                </el-input>
-                                <img :src="verifyCodeImgSrc" @click="send_code" class="verifyCodeImg" />
-                            </el-form-item>
-                            <el-form-item class="form_sub_button">
-                                <el-button type="primary" @click="submitForm">登&nbsp;&nbsp;录</el-button>
-                                <el-button @click="resetForm">注&nbsp;&nbsp;册</el-button>
-                            </el-form-item>
-                        </el-form>
-                    </div>
-                </div>
-            </h2>
+<div class="table">
+    <h2 style="color: white;">
+        <div class="login-form">
+            <div class="login-space">
+                <el-form @submit.native.prevent :label-position="labelPosition" label-width="80px" :model="formLabelAlign" :hide-required-asterisk="true">
+                    <el-form-item label="用户名" prop="name">
+                        <el-input prefix-icon="el-icon-user" v-model="formLabelAlign.name" clearable autocomplete="off">
+                        </el-input>
+                    </el-form-item>
+                    <el-form-item label="密码" prop="pass">
+                        <el-input prefix-icon="el-icon-s-cooperation" type="password"  v-model="formLabelAlign.pass" autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="验证码" class="verifyCodeArea" prop="verifyCode">
+                        <el-input type="text" maxlength="4" v-model="formLabelAlign.verifyCode" autocomplete="off">
+                        </el-input>
+                        <img :src="verifyCodeImgSrc" @click="send_code" class="verifyCodeImg" />
+                    </el-form-item>
+                    <el-form-item class="form_sub_button">
+                        <el-button type="primary" @click="submitForm">登&nbsp;&nbsp;录</el-button>
+                        <el-button @click="resetForm">注&nbsp;&nbsp;册</el-button>
+                    </el-form-item>
+                </el-form>
+            </div>
         </div>
+    </h2>
+</div>
 </template>
 
 <script>
 export default {
-   data() {
+    data() {
         return {
             labelPosition: 'top',
             formLabelAlign: {
@@ -82,6 +81,9 @@ export default {
             }
         }
     },
+    beforeDestroy() {
+        document.onkeydown = null;
+    },
     methods: {
         getVerifyCode() {
             this.postRequest('/pub/valiCode', '').then(resp => {
@@ -89,20 +91,29 @@ export default {
             });
         },
         submitForm() {
-            this.postRequest('/pub/pubKey', '').then(resp => {
-                var rsaPass = this.$getRsaCode(this.formLabelAlign.pass, resp.data); // ras 加密 密码 
+            var that = this;
+            that.postRequest('/pub/pubKey', '').then(resp => {
+                var rsaPass = that.$getRsaCode(that.formLabelAlign.pass, resp.data); // ras 加密 密码 
                 let params = {
-                    name: this.formLabelAlign.name,
+                    name: that.formLabelAlign.name,
                     pass: rsaPass,
-                    type: this.formLabelAlign.type,
-                    verifyCode: this.formLabelAlign.verifyCode
+                    type: that.formLabelAlign.type,
+                    verifyCode: that.formLabelAlign.verifyCode
                 };
-                this.postRequest('/pub/login', params).then(resp => {
+                that.postRequest('/pub/login', params).then(resp => {
                     if (resp.code == 200) {
-                        var _this = this;
-                        this.$message.success('登陆成功！正在跳转。。。');
+                        let param = {
+                            "user": '',
+                            "roles": '',
+                            "permissions": ''
+                        };
+                        param.user = resp.user;
+                        param.roles = resp.roles;
+                        param.permissions = resp.permissions;
+                        that.$store.commit("setLoginUser", param);
+                        that.$message.success('登陆成功！正在跳转。。。');
                         setTimeout(function () {
-                            _this.$router.replace('index');
+                            that.$router.replace('index');
                         }, 1500);
                     }
                 })

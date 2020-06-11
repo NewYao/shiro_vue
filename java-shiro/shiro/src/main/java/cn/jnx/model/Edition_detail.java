@@ -5,7 +5,6 @@ public class Edition_detail {
 
     private Integer edition_id;
 
-    private Integer order;
 
     private String detail;
 
@@ -25,13 +24,6 @@ public class Edition_detail {
         this.edition_id = edition_id;
     }
 
-    public Integer getOrder() {
-        return order;
-    }
-
-    public void setOrder(Integer order) {
-        this.order = order;
-    }
 
     public String getDetail() {
         return detail;

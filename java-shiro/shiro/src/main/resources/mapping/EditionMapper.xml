@@ -22,7 +22,7 @@
   </sql>
   
   <select id="queryEditionDetails" parameterType="int" resultMap="cn.jnx.mapper.Edition_detailMapper.BaseResultMap">
-  	select * from edition_detail e where  e.edition_id = #{id} order by e.order asc
+  	select * from edition_detail e where  e.edition_id = #{id} order by e.id asc
   </select>
   
   <select id="selectAll" resultMap="BaseResultMapWithDetail">
@@ -40,7 +40,7 @@
     delete from edition
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="cn.jnx.model.Edition">
+  <insert id="insert" parameterType="cn.jnx.model.Edition" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
     insert into edition (id, createtime, edition_code, 
       type)
     values (#{id,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, #{edition_code,jdbcType=VARCHAR}, 
